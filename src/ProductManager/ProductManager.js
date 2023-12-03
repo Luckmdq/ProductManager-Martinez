@@ -1,4 +1,4 @@
-import * as fs from 'node:fs';
+import * as fs from "node:fs";
 
 export class ProductManager {
   static id = 0;
@@ -11,7 +11,7 @@ export class ProductManager {
     /* retorna un array vacio junto a un mensaje, o el array con un json */
     try {
       const datos = await fs.promises.readFile(this.path, "utf-8");
-      
+
       /* retornaria un array, necesitando retornar solo el json */
       /* const productos = JSON.parse(datos);
       console.log(productos) */
@@ -72,7 +72,11 @@ export class ProductManager {
       }
       return producto;
     });
-    await fs.promises.writeFile(this.path, JSON.stringify(updatedProducst),"utf-8")
+    await fs.promises.writeFile(
+      this.path,
+      JSON.stringify(updatedProducst),
+      "utf-8"
+    );
     /* 
     const encontrado = productos.findIndex((p) => p.code === product.code);
     if (!encontrado) {
@@ -88,7 +92,11 @@ export class ProductManager {
   async deleteProduct(id) {
     let productos = await this.getProducts();
     let elementosBorrados = productos.filter((producto) => producto.id !== id);
-    await fs.promises.writeFile(this.path, JSON.stringify(elementosBorrados),"utf-8");
+    await fs.promises.writeFile(
+      this.path,
+      JSON.stringify(elementosBorrados),
+      "utf-8"
+    );
   }
 }
 
@@ -107,7 +115,7 @@ export class ProductManager {
   /* console.log(data);
    */
 
-  /* el retorno luego de ser un console.log en la funcion me queda undefined, habria que hacer un console log con un ternario, si retorna el elemento o undefined? */
+/* el retorno luego de ser un console.log en la funcion me queda undefined, habria que hacer un console log con un ternario, si retorna el elemento o undefined? */
 /*    console.log(await manageProduct.getProductById(2));
 };
 
