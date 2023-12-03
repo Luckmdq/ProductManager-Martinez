@@ -1,6 +1,6 @@
-const fs = require("fs");
+import * as fs from 'node:fs';
 
-class ProductManager {
+export class ProductManager {
   static id = 0;
 
   constructor(path) {
@@ -11,10 +11,12 @@ class ProductManager {
     /* retorna un array vacio junto a un mensaje, o el array con un json */
     try {
       const datos = await fs.promises.readFile(this.path, "utf-8");
-      const productos = JSON.parse(datos);
-      return productos;
+      
+      /* retornaria un array, necesitando retornar solo el json */
+      /* const productos = JSON.parse(datos);
+      console.log(productos) */
+      return datos;
     } catch (error) {
-      console.log("No se encontraron datos");
       return [];
     }
   }
@@ -90,7 +92,7 @@ class ProductManager {
   }
 }
 
-const test = async () => {
+/* const test = async () => {
   const manageProduct = new ProductManager("./productos.json");
   let data = await manageProduct.getProducts();
   manageProduct.addProducts({
@@ -106,7 +108,7 @@ const test = async () => {
    */
 
   /* el retorno luego de ser un console.log en la funcion me queda undefined, habria que hacer un console log con un ternario, si retorna el elemento o undefined? */
-  console.log(await manageProduct.getProductById(2));
+/*    console.log(await manageProduct.getProductById(2));
 };
 
-test();
+test();  */
