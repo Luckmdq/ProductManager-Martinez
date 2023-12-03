@@ -11,11 +11,9 @@ export class ProductManager {
     /* retorna un array vacio junto a un mensaje, o el array con un json */
     try {
       const datos = await fs.promises.readFile(this.path, "utf-8");
-
-      /* retornaria un array, necesitando retornar solo el json */
-      /* const productos = JSON.parse(datos);
-      console.log(productos) */
-      return datos;
+      let productos=JSON.parse(datos)
+	
+      return productos;
     } catch (error) {
       return [];
     }
@@ -54,8 +52,10 @@ export class ProductManager {
   }
 
   async getProductById(id) {
-    const productos = await this.getProducts();
-    const encontrado = productos.find((e) => e.id == id);
+    let productos = await this.getProducts();
+    productos=productos
+    const encontrado = productos.find((e) => e.id === id);
+    console.log(encontrado);
     return encontrado ? encontrado : console.log(`Not Found`);
   }
 
