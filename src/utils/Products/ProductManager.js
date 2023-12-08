@@ -11,8 +11,8 @@ export class ProductManager {
     /* retorna un array vacio junto a un mensaje, o el array con un json */
     try {
       const datos = await fs.promises.readFile(this.path, "utf-8");
-      let productos=JSON.parse(datos)
-	
+      let productos = JSON.parse(datos);
+
       return productos;
     } catch (error) {
       return [];
@@ -21,17 +21,7 @@ export class ProductManager {
 
   async addProducts(product) {
     /* al ingresar y ser undefined algun campo tendria que salir por no ser valido el campo */
-    if (
-      !product.title ||
-      !product.description ||
-      !product.price ||
-      !product.thumbnail ||
-      !product.code ||
-      !product.code ||
-      !product.stock
-    ) {
-      return console.log(`Datos de productos no completados`);
-    }
+    
 
     const elementos = await this.getProducts();
 
@@ -53,9 +43,8 @@ export class ProductManager {
 
   async getProductById(id) {
     let productos = await this.getProducts();
-    productos=productos
+    productos = productos;
     const encontrado = productos.find((e) => e.id === id);
-    console.log(encontrado);
     return encontrado ? encontrado : console.log(`Not Found`);
   }
 
@@ -78,16 +67,16 @@ export class ProductManager {
       "utf-8"
     );
     /* 
-    const encontrado = productos.findIndex((p) => p.code === product.code);
-    if (!encontrado) {
-      return console.log(`no se encontro el producto`);
-    }
-    productos[encontrado] = {
-      ...encontrado,
-      ...product,
-      id: product.id,
-    };
- */
+      const encontrado = productos.findIndex((p) => p.code === product.code);
+      if (!encontrado) {
+        return console.log(`no se encontro el producto`);
+      }
+      productos[encontrado] = {
+        ...encontrado,
+        ...product,
+        id: product.id,
+      };
+   */
   }
   async deleteProduct(id) {
     let productos = await this.getProducts();
@@ -100,23 +89,24 @@ export class ProductManager {
   }
 }
 
+
 /* const test = async () => {
-  const manageProduct = new ProductManager("./productos.json");
-  let data = await manageProduct.getProducts();
-  manageProduct.addProducts({
-    title: "producto prueba",
-    description: "Este es un producto prueba",
-    price: 200,
-    thumbnail: "Sin imagen",
-    code: "abc123",
-    stock: 25,
-  });
-  data = await manageProduct.getProducts();
-  /* console.log(data);
-   */
+    const manageProduct = new ProductManager("./productos.json");
+    let data = await manageProduct.getProducts();
+    manageProduct.addProducts({
+      title: "producto prueba",
+      description: "Este es un producto prueba",
+      price: 200,
+      thumbnail: "Sin imagen",
+      code: "abc123",
+      stock: 25,
+    });
+    data = await manageProduct.getProducts();
+    /* console.log(data);
+     */
 
 /* el retorno luego de ser un console.log en la funcion me queda undefined, habria que hacer un console log con un ternario, si retorna el elemento o undefined? */
 /*    console.log(await manageProduct.getProductById(2));
-};
-
-test();  */
+  };
+  
+  test();  */
