@@ -57,12 +57,8 @@ carts.get("/:cid", async (req, res) => {
 */
 
 carts.post("/:cid/product/:pid", async (req, res) => {
-	const cid= await parseInt(req.params.cid);
-	const pid= await parseInt(req.params.pid);
-	if (!await manager.getCartbyId(cid)){
-		return res.send({"message":"carrito no encontrad"})
-	}
-	await manager.addProductOnCart(pid,cid)
+	const {cid,pid}= req.params;
+	await manager.addProductOnCart(cid,pid)
 	res.send({"message":`producto agregado al carrito:${pid}`})
 });
 

@@ -33,19 +33,27 @@ export class CartManager {
     let encontrado= carts.find(e=>e.id===id);
     return encontrado?encontrado:undefined;
   }
-
+/* 
   async getProductosOfCartbyId(id){
-    let cart= await this.getCartbyId(id);
-    return cart.productos;
-  }
+    let cart= await this.getCartbyId(+id);
+    console.log(cart.proucts)
+    return cart;
+  } */
 
-  async addProductOnCart(productId,cartId){
-    const productos= await this.getProductosOfCartbyId(cartId)
-    console.log(productos)
-    let encontrado=productos.find(e=>{e.id==productId});
-    console.log(typeof(encontrado));
-    
-    console.log(`${(productId)}....${(cartId)}`)
+  async addProductOnCart(cartId,productId){
+    const carts= await this.getCarts();
+    const cartsActualizado=carts.map(puntero=>{
+      if(puntero.id==cartId){
+        const existe=puntero.products.find(e=>e.id==productId)
+        if (existe){
+          existe.quantity++
+        }else{
+          puntero.products=[...puntero.products,{id:+productId, quantity:1}];
+        }
+      }
+      return puntero
+    })
+    await fs.promises.writeFile(this.path,JSON.stringify(cartsActualizado),'utf-8');
   }
 
 };
