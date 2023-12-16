@@ -1,10 +1,13 @@
 {{!-- lista de productos en tiempo real web socket --}}
 
-<div>
-    Lista de productos (eliminacion)
-</div>
+<ul id="selector">
+	{{#each productos}}
+	<li id="{{this.id}}">nombre:{{this.title}} / Precio: ${{this.price}} // Cantidad: {{this.stock}} </li>
+	{{/each}}
+</ul>
 <form action="">
-    <p>Formulario de  creacion de productos</p>
+	<p>Formulario de creacion de productos</p>
 </form>
 
+<script src="/socket.io/socket.io.js"></script>
 <script src="js/realTimeProducts.js"></script>

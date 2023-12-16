@@ -1,1 +1,0 @@
-console.log('buenas del front')
