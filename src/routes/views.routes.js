@@ -7,13 +7,14 @@ views.get("/", async (req, res) => {
   const { data: productos } = await Axios.get(
     "http://localhost:8080/api/products"
   );
-  console.log(productos);
-  return res.render("home", productos);
+  return res.render("home", {productos});
 });
 
-views.get("/realtimeproducts", (req, res) => {
-  data = { title: "productos" };
-  return res.render("realTimeProducts", data);
+views.get("/realtimeproducts", async(req, res) => {
+    const { data: productos } = await Axios.get(
+      "http://localhost:8080/api/products"
+    );
+  return res.render("realTimeProducts", productos);
 });
 
 export default views;

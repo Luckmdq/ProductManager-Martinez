@@ -1,5 +1,9 @@
 {{!-- Lista con productosagregados hasta el momento --}}
-<div>
-    <h1>Lista de productos</h1>
-</div>
+<h1>Lista de productos</h1>
+<ul>
+    
+    {{#each productos}}
+    <li>nombre:{{this.title}} / Precio: ${{this.price}} // Cantidad: {{this.stock}} </li>
+    {{/each}}
+</ul>
 <script src="js/home.js"></script>
