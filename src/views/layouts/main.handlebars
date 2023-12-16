@@ -6,6 +6,8 @@
     <title>{{title}}</title>
 </head>
 <body>
+    {{!-- como necesito el socket para enviar las peticiones, como no estaba 100% seguro de por donde enviarla lo solicito al principio para tenerlo en todos los scripts no y no necesitar llamarlo en cada view, si solo lo viera necesario en uno lo dejaria en ese¿+ --}}
+    <script src="/socket.io/socket.io.js"></script>
     {{{body}}}
 </body>
 </html>
