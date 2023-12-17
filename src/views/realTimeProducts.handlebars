@@ -2,11 +2,43 @@
 
 <ul id="selector">
 	{{#each productos}}
-	<li id="{{this.id}}">nombre:{{this.title}} / Precio: ${{this.price}} // Cantidad: {{this.stock}} </li>
+	<li id="{{this.id}}">
+		nombre:{{this.title}} /
+		Precio: ${{this.price}} //
+		Cantidad: {{this.stock}} //
+		<button aria-label="{{this.id}}">editar</button> //
+		<button aria-label="{{this.id}}">eliminar</button>
+	</li>
 	{{/each}}
 </ul>
-<form action="">
-	<p>Formulario de creacion de productos</p>
+<form id="form" action="">
+	<h1>Formulario</h1>
+	<fieldset>
+		<legend>Titulo de producto</legend>
+		<label for="title"> nombre de producto: <input type="text" id="titleProduct" placeholder="nombre de producto"></label>
+	</fieldset>
+	<fieldset>
+		<legend>Descripcion de producto</legend>
+		<label for="description"> descripcion de producto: <input type="text" id="descriptionProduct" placeholder="descripcion de producto"></label>
+	</fieldset>
+	<fieldset>
+		<legend>Precio</legend>
+		<label for="price"> Precio de producto: <input type="number" id="priceProduct" placeholder="nombre de producto"></label>
+	</fieldset>
+	<fieldset>
+		<legend>Imagen</legend>
+		<label for="thumbnail"> Imagen de producto: <input type="text" id="thumbnailProduct" placeholder="Ruta de imagen"></label>
+	</fieldset>
+	<fieldset>
+		<legend>Codigo</legend>
+		<label for="code"> Codigo de producto: <input type="text" id="codeProduct" placeholder="Codigo de producto"></label>
+	</fieldset>
+	<fieldset>
+		<legend>Cantidad</legend>
+		<label for="stock"> Cantidad de productos: <input type="number" id="stockProduct" placeholder="Stock de productos"></label>
+	</fieldset>
+	<button>Confirmar</button>
+
 </form>
 
 <script src="/socket.io/socket.io.js"></script>
