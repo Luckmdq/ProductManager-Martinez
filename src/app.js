@@ -39,6 +39,7 @@ const httpServer = app.listen(PORT, () => {
 const io = new Server(httpServer);
 
 io.on("connect", (socket) => {
+
   socket.on("editar", async (idElemento) => {
     idElemento = parseInt(idElemento);
     const { data: producto } = await Axios.get(
@@ -47,11 +48,13 @@ io.on("connect", (socket) => {
     /* envia el producto a editar al cliente que lo solicita*/
     socket.emit("productoSolicitado", producto);
   });
+
   socket.on("eliminar", async (idElemento) => {
     idElemento = parseInt(idElemento);
     await axios.delete(`http://localhost:8080/api/products/${idElemento}`);
     /* notificamos todos los demas usuarios de la eliminacion del elemento */
   });
+
   socket.on("productModificar", async (dato) => {
     const { data: productActual } = await Axios.get(
       `http://localhost:8080/api/products/idByCode/${dato.code}`
@@ -61,8 +64,11 @@ io.on("connect", (socket) => {
       `http://localhost:8080/api/products/${productActual.id}`,
       dato
     );
-
     /* renderizar productos actualizados */
+    const { data: productos } = await axios.get(
+      `http://localhost:8080/api/products`
+    );
+    socket.emit("renderPrincipal", productos);
   });
 
   socket.on("productAdd", async (dato) => {
