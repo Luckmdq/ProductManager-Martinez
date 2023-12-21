@@ -53,6 +53,10 @@ io.on("connect", (socket) => {
     idElemento = parseInt(idElemento);
     await axios.delete(`http://localhost:8080/api/products/${idElemento}`);
     /* notificamos todos los demas usuarios de la eliminacion del elemento */
+    const { data: productos } = await axios.get(
+      `http://localhost:8080/api/products`
+    );
+    socket.emit("renderPrincipal", productos);
   });
 
   socket.on("productModificar", async (dato) => {
@@ -72,7 +76,7 @@ io.on("connect", (socket) => {
   });
 
   socket.on("productAdd", async (dato) => {
-    await axios;
+
   });
   socket.on("renderizado", async () => {
     const { data: productos } = await axios.get(
