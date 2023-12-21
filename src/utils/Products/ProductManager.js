@@ -48,6 +48,13 @@ export class ProductManager {
     return encontrado ? encontrado : console.log(`Not Found`);
   }
 
+  async getIdByCode(code) {
+    let productos = await this.getProducts();
+    productos = productos;
+    const encontrado = productos.find((e) => e.code === code);
+    return encontrado ? encontrado : console.log(`Not Found`);
+  }
+
   async updateProduct(id, product) {
     /* presupuse que el valor que no cambia seria el code, aunque creo que seria el id, pero pide que no se alla eliminado asique podria modificarse, creo que faltaria ese dato el enunciado o no? */
     let productos = await this.getProducts();

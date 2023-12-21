@@ -3,10 +3,10 @@ import products from "./routes/product.routes.js";
 import carts from "./routes/carts.routes.js";
 import Axios from "axios";
 
-
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
 import views from "./routes/views.routes.js";
+import axios from "axios";
 
 /* la organizacion se me ocurrio sobre la marcha, nose si esta bien, osea el router enruta desde la ruta al utils que es el que almacena los archivos por asi decirlo, nose si esta bien o hay algun otro modo, mas que nada para no matar la persistencia de archivos, por ahi mas adelante se ve otro modo xD */
 
@@ -39,16 +39,39 @@ const httpServer = app.listen(PORT, () => {
 const io = new Server(httpServer);
 
 io.on("connect", (socket) => {
-  socket.on("editar", async idElemento=>{
-    idElemento=parseInt(idElemento);
+  socket.on("editar", async (idElemento) => {
+    idElemento = parseInt(idElemento);
     const { data: producto } = await Axios.get(
       `http://localhost:8080/api/products/${idElemento}`
     );
     /* envia el producto a editar al cliente que lo solicita*/
-    socket.emit('productoSolicitado',producto)
-  })
-  socket.on("eliminar",  idElemento=>{
-    idElemento=parseInt(idElemento);
-    console.log(`eliminacion ${idElemento}`)
-  })
+    socket.emit("productoSolicitado", producto);
+  });
+  socket.on("eliminar", async (idElemento) => {
+    idElemento = parseInt(idElemento);
+    await axios.delete(`http://localhost:8080/api/products/${idElemento}`);
+    /* notificamos todos los demas usuarios de la eliminacion del elemento */
+  });
+  socket.on("productModificar", async (dato) => {
+    const { data: productActual } = await Axios.get(
+      `http://localhost:8080/api/products/idByCode/${dato.code}`
+    );
+    /* productActual.id del producto actual a modificar */
+    await Axios.put(
+      `http://localhost:8080/api/products/${productActual.id}`,
+      dato
+    );
+
+    /* renderizar productos actualizados */
+  });
+
+  socket.on("productAdd", async (dato) => {
+    await axios;
+  });
+  socket.on("renderizado", async () => {
+    const { data: productos } = await axios.get(
+      `http://localhost:8080/api/products`
+    );
+    socket.emit("renderPrincipal", productos);
+  });
 });

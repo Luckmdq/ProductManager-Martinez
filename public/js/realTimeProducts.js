@@ -6,7 +6,7 @@ Si se desea hacer la conexión de socket emits con HTTP, deberás buscar la form
 
 const socket = io();
 
-const selector = document.getElementById("selector");
+const mainRender = document.getElementById("selector");
 
 const formulario = document.getElementById("form");
 
@@ -16,17 +16,40 @@ const price = document.getElementById("priceProduct");
 const thumbnail = document.getElementById("thumbnailProduct");
 const code = document.getElementById("codeProduct");
 const stock = document.getElementById("stockProduct");
+const btnFun = document.getElementById("funcionalidad");
 
-socket.on("productoSolicitado", (producto) => {
-  title.placeholder = producto.title;
-  description.placeholder = producto.description;
-  price.placeholder = producto.price;
-  thumbnail.placeholder = producto.thumbnail;
-  code.placeholder = producto.code;
-  stock.placeholder = producto.stock;
+/* rendericado de productos */
+socket.on("renderPrincipal", (productos) => {
+  let item = "";
+  productos.map((producto) => {
+    item += `
+    <li id="${producto.id}">
+		nombre:${producto.title} /
+		Precio:$ ${producto.price} //
+		Cantidad: ${producto.stock} //
+		<button aria-label="${producto.id}">editar</button> //
+		<button aria-label="${producto.id}">eliminar</button>
+	  </li>`;
+  });
+  mainRender.innerHTML = item;
 });
 
-const seleccion = selector.addEventListener("click", (e) => {
+socket.emit("renderizado");
+
+socket.on("productoSolicitado", (producto) => {
+  /* se modifcan los valores con los valores del producto seleccionado */
+  title.value = producto.title;
+  description.value = producto.description;
+  price.value = producto.price;
+  thumbnail.value = producto.thumbnail;
+  code.value = producto.code;
+  stock.value = producto.stock;
+  btnFun.innerText = "Modificar";
+});
+
+/* renderizado de productos actualizados */
+
+mainRender.addEventListener("click", (e) => {
   /* todo en el "panel de seleccion de los productos" para no generar uno por cada boton o campo de botones (fieldSet) */
   /* siendo:
          e.target.innerHTML el contenido de lo seleccionado 
@@ -39,4 +62,18 @@ const seleccion = selector.addEventListener("click", (e) => {
     (funcion === "editar" || funcion === "eliminar") &&
       socket.emit(funcion, idElemento);
   }
+});
+
+btnFun.addEventListener("click", (e) => {
+  e.preventDefault();
+  let accion = btnFun.innerText;
+  const producto = {
+    title: title.value,
+    description: description.value,
+    price: parseInt(price.value),
+    thumbnail: thumbnail.value,
+    code: code.value,
+    stock: parseInt(stock.value),
+  };
+  socket.emit(`product${accion}`, producto);
 });

@@ -1,15 +1,6 @@
 {{!-- lista de productos en tiempo real web socket --}}
 
 <ul id="selector">
-	{{#each productos}}
-	<li id="{{this.id}}">
-		nombre:{{this.title}} /
-		Precio: ${{this.price}} //
-		Cantidad: {{this.stock}} //
-		<button aria-label="{{this.id}}">editar</button> //
-		<button aria-label="{{this.id}}">eliminar</button>
-	</li>
-	{{/each}}
 </ul>
 <form id="form" action="">
 	<h1>Formulario</h1>
@@ -37,7 +28,7 @@
 		<legend>Cantidad</legend>
 		<label for="stock"> Cantidad de productos: <input type="number" id="stockProduct" placeholder="Stock de productos"></label>
 	</fieldset>
-	<button>Confirmar</button>
+	<button id="funcionalidad">Add</button>
 
 </form>
 

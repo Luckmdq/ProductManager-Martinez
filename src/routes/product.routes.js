@@ -6,7 +6,7 @@ const products = Router();
 const manager = new ProductManager("./src/utils/Products/productos.json");
 
 products.get("/", async (req, res) => {
-  let {limit}  = req.query;
+  let { limit } = req.query;
   limit = parseInt(limit);
   /* prueba de ubicacion de carpeta para llamar a get products */
   var productos = await manager.getProducts();
@@ -23,9 +23,14 @@ products.get("/:id", async (req, res) => {
   let producto = await manager.getProductById(id);
   res.send(producto);
 });
+products.get("/idByCode/:code", async (req, res) => {
+  let code = req.params.code;
+  let product = await manager.getIdByCode(code);
+  res.send(product);
+});
 
-const checkUser = (req, res, next) => {
-  const product=req.body
+const checkUser = async (req, res, next) => {
+  const product = req.body;
   if (
     !product.title ||
     !product.description ||
@@ -34,32 +39,32 @@ const checkUser = (req, res, next) => {
     !product.stock ||
     !product.category
   ) {
-    /* return corta el flujo en el middleware */
-    return res.status(400).send({message:"product invalid"})
+    return res.status(400).send({ message: "product invalid" });
   }
-  next()
+  const id=await manager.getIdByCode(products.code)
+  if (!id){
+    return res.status(400).send({ message: "code invalid" });
+  }
+  next();
 };
 
 products.post("/", checkUser, async (req, res) => {
   /* se inicializa el id */
   const producto = req.body;
-  console.log(producto);
   await manager.addProducts(producto);
   res.send({ message: `producto agregado` });
 });
 
-
 products.put("/:id", (req, res) => {
-  const pid=parseInt(req.params.id);
-  const producto=req.body;
-  manager.updateProduct(pid,producto);
-  res.send({message:`product updated ${pid}`});
+  const pid = parseInt(req.params.id);
+  const producto = req.body;
+  manager.updateProduct(pid, producto);
+  res.send({ message: `product updated ${pid}` });
 });
 products.delete("/:id", (req, res) => {
-  const pid=parseInt(req.params.id);
-  manager.deleteProduct(pid)
-  res.send({message:`producto borrado id:${pid}`});
+  const pid = parseInt(req.params.id);
+  manager.deleteProduct(pid);
+  res.send({ message: `producto borrado id:${pid}` });
 });
-
 
 export default products;
