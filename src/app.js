@@ -2,6 +2,7 @@ import express from "express";
 import products from "./routes/product.routes.js";
 import carts from "./routes/carts.routes.js";
 import Axios from "axios";
+import mongoose from "mongoose";
 
 import { Server } from "socket.io";
 import handlebars from "express-handlebars";
@@ -13,6 +14,15 @@ import axios from "axios";
 /* inicializacion express */
 const app = express();
 const PORT = 8080;
+const bdConect = {
+  user: "LucianoM",
+  pass: "4149",
+  bd: "ecommerce",
+};
+
+mongoose.conect(
+  `mongodb+srv://${bdConect.user}:${bdConect.pass}@cluster0.tfngdf0.mongodb.net/${bdConect.bd}`
+);
 
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
@@ -39,7 +49,6 @@ const httpServer = app.listen(PORT, () => {
 const io = new Server(httpServer);
 
 io.on("connect", (socket) => {
-
   socket.on("editar", async (idElemento) => {
     idElemento = parseInt(idElemento);
     const { data: producto } = await Axios.get(
@@ -75,9 +84,7 @@ io.on("connect", (socket) => {
     socket.emit("renderPrincipal", productos);
   });
 
-  socket.on("productAdd", async (dato) => {
-
-  });
+  socket.on("productAdd", async (dato) => {});
   socket.on("renderizado", async () => {
     const { data: productos } = await axios.get(
       `http://localhost:8080/api/products`

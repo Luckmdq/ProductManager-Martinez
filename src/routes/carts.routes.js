@@ -1,35 +1,13 @@
 import { Router } from "express";
-import { CartManager } from "../utils/Cart/CartManager.js";
+import { CartManager } from "../dao/managerFs/Cart/CartManager.js";
 
 const carts = Router();
 
 const manager = new CartManager("./src/utils/Cart/cart.json");
 
-
 /* 
-cart=[
-	{
-		id:...,
-		products=[
-			{
-			id:..,
-			cantidad:..,
-			},
-			{
-			id:..,
-			cantidad:..,
-			},
-			{
-			id:..,
-			cantidad:..,
-			},
-		]
-	}
-]
-*/
 
 carts.post("/", (req, res) => {
-	/* reciviendo un array de un producto con respectiva cantidad sin id, ya que no existe */
 	const cart=req.body;
 	console.log(cart)
 	manager.addCart(cart);
@@ -49,12 +27,6 @@ carts.get("/:cid", async (req, res) => {
 	res.send(productos);
 });
 
-/* 
-	product={
-		id:..,
-		cantidad:..,
-	}
-*/
 
 carts.post("/:cid/product/:pid", async (req, res) => {
 	const {cid,pid}= req.params;
@@ -62,4 +34,4 @@ carts.post("/:cid/product/:pid", async (req, res) => {
 	res.send({"message":`producto agregado al carrito:${pid}`})
 });
 
-export default carts
+export default carts */
