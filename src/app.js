@@ -20,7 +20,7 @@ const bdConect = {
   bd: "ecommerce",
 };
 
-mongoose.conect(
+mongoose.connect(
   `mongodb+srv://${bdConect.user}:${bdConect.pass}@cluster0.tfngdf0.mongodb.net/${bdConect.bd}`
 );
 

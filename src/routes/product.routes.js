@@ -1,16 +1,13 @@
 import { Router } from "express";
-import { ProductManager } from "../utils/Products/ProductManager.js";
 
-const products = Router();
-
+ const products = Router();
+/*
 const manager = new ProductManager("./src/utils/Products/productos.json");
 
 products.get("/", async (req, res) => {
   let { limit } = req.query;
   limit = parseInt(limit);
-  /* prueba de ubicacion de carpeta para llamar a get products */
   var productos = await manager.getProducts();
-  /* al existir el limite se utiliza y se hace el slice de productos */
   if (limit) {
     productos = productos.slice(0, limit);
   }
@@ -49,7 +46,6 @@ const checkUser = async (req, res, next) => {
 };
 
 products.post("/", checkUser, async (req, res) => {
-  /* se inicializa el id */
   const producto = req.body;
   await manager.addProducts(producto);
   res.send({ message: `producto agregado` });
@@ -66,5 +62,5 @@ products.delete("/:id", (req, res) => {
   manager.deleteProduct(pid);
   res.send({ message: `producto borrado id:${pid}` });
 });
-
+ */
 export default products;

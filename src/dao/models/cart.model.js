@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 const cartCollection = "carts";
 const cartProductSchema = mongoose.Schema({
+  productId:{
+    type:Number,
+    required:true
+  },
   cantidad: {
     type: Number,
     required: true,
@@ -14,4 +18,4 @@ const cartSchema = mongoose.Schema({
   },
 });
 
-export default cartModel = mongoose.model(cartCollection, cartSchema);
+export const cartModel = mongoose.model(cartCollection, cartSchema);
