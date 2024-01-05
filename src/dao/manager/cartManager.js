@@ -3,8 +3,7 @@ import { cartModel } from "../models/cart.model.js";
 export const getCarts = async () => {
   const respuesta = {};
   try {
-    const carts = await cartModel.find();
-    respuesta.dato = carts;
+    respuesta.dato = await cartModel.find();
     respuesta.message = "datos obtenidos";
   } catch (error) {
     respuesta.dato = error;

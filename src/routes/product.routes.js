@@ -1,6 +1,47 @@
 import { Router } from "express";
+import {
+  addProduct,
+  getProducts,
+  getById,
+  deleteProduct,
+  modProduct,
+} from "../dao/manager/productManager.js";
 
- const products = Router();
+const products = Router();
+
+products.get("/", async (req, res) => {
+  let { limit } = req.query;
+  let productos = await getProducts();
+  res.send(productos.dato);
+});
+
+products.post("/", async (req, res) => {
+  const product = req.body;
+  let respuesta = await addProduct(product);
+  res.send(respuesta.message);
+});
+
+products.get("/:PId", async (req, res) => {
+  const { PId } = req.params;
+  let data = await getById(PId);
+  res.send(data.dato);
+});
+
+products.delete("/:PId", async (req, res) => {
+  let { PId } = req.params;
+  let rta = await deleteProduct(PId);
+  if (rta.succes) {
+    return res.status(200).send(rta.message);
+  }
+  return res.status(400).send(rta.message);
+});
+
+products.put("/:PId", async (req, res) => {
+  let { PId } = req.params;
+  let  productUpdate  = req.body;
+  let rta = await modProduct(PId, productUpdate);
+  rta ? res.send({ msg: "modificado" }) : res.send({ msg: "no modificado" });
+});
 /*
 const manager = new ProductManager("./src/utils/Products/productos.json");
 
