@@ -38,7 +38,6 @@ app.set("view engine", "handlebars");
 app.use("/api/products", products);
 app.use("/api/carts", carts);
 app.use("/", views);
-app.use("/realtimeproducts", views);
 
 const httpServer = app.listen(PORT, () => {
   console.log(`servidor funcionando en ${PORT}`);
@@ -50,7 +49,6 @@ const io = new Server(httpServer);
 
 io.on("connect", (socket) => {
   socket.on("editar", async (idElemento) => {
-    idElemento = parseInt(idElemento);
     const { data: producto } = await Axios.get(
       `http://localhost:8080/api/products/${idElemento}`
     );
@@ -70,21 +68,26 @@ io.on("connect", (socket) => {
 
   socket.on("productModificar", async (dato) => {
     const { data: productActual } = await Axios.get(
-      `http://localhost:8080/api/products/idByCode/${dato.code}`
+      `http://localhost:8080/api/products/bycode/${dato.code}`
     );
-    /* productActual.id del producto actual a modificar */
+    console.log(productActual);
     await Axios.put(
-      `http://localhost:8080/api/products/${productActual.id}`,
+      `http://localhost:8080/api/products/${productActual._id}`,
       dato
     );
-    /* renderizar productos actualizados */
     const { data: productos } = await axios.get(
       `http://localhost:8080/api/products`
     );
     socket.emit("renderPrincipal", productos);
   });
 
-  socket.on("productAdd", async (dato) => {});
+  socket.on("productAdd", async (dato) => {
+    await axios.post(`http://localhost:8080/api/products`);
+    const { data: productos } = await axios.get(
+      `http://localhost:8080/api/products`
+    );
+    socket.emit("renderPrincipal", productos);
+  });
   socket.on("renderizado", async () => {
     const { data: productos } = await axios.get(
       `http://localhost:8080/api/products`

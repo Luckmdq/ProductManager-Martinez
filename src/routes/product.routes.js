@@ -5,6 +5,7 @@ import {
   getById,
   deleteProduct,
   modProduct,
+  getByCode,
 } from "../dao/manager/productManager.js";
 
 const products = Router();
@@ -17,13 +18,20 @@ products.get("/", async (req, res) => {
 
 products.post("/", async (req, res) => {
   const product = req.body;
+  console.log(product)
   let respuesta = await addProduct(product);
-  res.send(respuesta.message);
+  res.send(respuesta);
 });
 
 products.get("/:PId", async (req, res) => {
   const { PId } = req.params;
   let data = await getById(PId);
+  res.json(data);
+});
+
+products.get("/bycode/:code", async (req, res) => {
+  const { code } = req.params;
+  let data = await getByCode(code);
   res.send(data.dato);
 });
 

@@ -6,29 +6,17 @@ Si se desea hacer la conexión de socket emits con HTTP, deberás buscar la form
 
 const socket = io();
 
-const mainRender = document.getElementById("selector");
-
-const formulario = document.getElementById("form");
-
-const title = document.getElementById("titleProduct");
-const description = document.getElementById("descriptionProduct");
-const price = document.getElementById("priceProduct");
-const thumbnail = document.getElementById("thumbnailProduct");
-const code = document.getElementById("codeProduct");
-const stock = document.getElementById("stockProduct");
-const btnFun = document.getElementById("funcionalidad");
-
 /* rendericado de productos */
 socket.on("renderPrincipal", (productos) => {
   let item = "";
   productos.map((producto) => {
     item += `
-    <li id="${producto.id}">
+    <li id="${producto._id}">
 		nombre:${producto.title} /
 		Precio:$ ${producto.price} //
 		Cantidad: ${producto.stock} //
-		<button aria-label="${producto.id}">editar</button> //
-		<button aria-label="${producto.id}">eliminar</button>
+		<button aria-label="${producto._id}">editar</button> //
+		<button aria-label="${producto._id}">eliminar</button>
 	  </li>`;
   });
   mainRender.innerHTML = item;
@@ -50,15 +38,14 @@ socket.on("productoSolicitado", (producto) => {
 /* renderizado de productos actualizados */
 
 mainRender.addEventListener("click", (e) => {
-  /* todo en el "panel de seleccion de los productos" para no generar uno por cada boton o campo de botones (fieldSet) */
-  /* siendo:
-         e.target.innerHTML el contenido de lo seleccionado 
-         e.target.localName el tipo de elemento seleccionado 
-         utilizando el aria label para poder identificar el id */
   if (e.target.localName === "button") {
-    /* ya sabiendo que se preciono en un boton se pueden aislar las variables del mismo, ya que solo se encontrarian estas en la lista de productos */
     const idElemento = e.target.ariaLabel;
     const funcion = e.target.innerHTML;
+    if (funcion === "editar") {
+      formulario.setAttribute("action", `/api/products/${idElemento}`);
+      formulario.setAttribute("method", "put");
+      btnFun.setAttribute("style", "visibility=hidden");
+    }
     (funcion === "editar" || funcion === "eliminar") &&
       socket.emit(funcion, idElemento);
   }

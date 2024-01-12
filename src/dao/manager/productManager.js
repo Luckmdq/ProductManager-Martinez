@@ -35,6 +35,17 @@ export const getById = async (productId) => {
   }
   return respuesta;
 };
+export const getByCode = async (codigo) => {
+  const respuesta = {};
+  try {
+    respuesta.dato = await productModel.findOne({ 'code': codigo });
+    respuesta.message = "encontrado";
+  } catch (error) {
+    respuesta.dato = error;
+    respuesta.message = "no encontrado";
+  }
+  return respuesta;
+};
 
 export const deleteProduct = async (productId) => {
   let respuesta = {

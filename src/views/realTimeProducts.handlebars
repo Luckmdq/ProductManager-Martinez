@@ -2,35 +2,49 @@
 
 <ul id="selector">
 </ul>
-<form id="form" action="">
+<form id="form" action="/api/products" method="post">
 	<h1>Formulario</h1>
 	<fieldset>
 		<legend>Titulo de producto</legend>
-		<label for="title"> nombre de producto: <input type="text" id="titleProduct" placeholder="nombre de producto"></label>
+		<label for="titleProduct"> nombre de producto:</label>
+		<input type="text" id="titleProduct" placeholder="nombre de producto" name="title">
 	</fieldset>
 	<fieldset>
 		<legend>Descripcion de producto</legend>
-		<label for="description"> descripcion de producto: <input type="text" id="descriptionProduct" placeholder="descripcion de producto"></label>
+		<label for="descriptionProduct"> descripcion de producto:</label>
+		<input type="text" id="descriptionProduct" placeholder="descripcion de producto" name="description">
+	</fieldset>
+	<fieldset>
+		<legend>Categoria de producto</legend>
+		<label for="categoryProduct"> Categoria de producto:</label>
+		<input type="text" id="categoryProduct" name="category" placeholder="descripcion de producto"
+			name="category">
 	</fieldset>
 	<fieldset>
 		<legend>Precio</legend>
-		<label for="price"> Precio de producto: <input type="number" id="priceProduct" placeholder="nombre de producto"></label>
+		<label for="priceProduct"> Precio de producto: </label>
+		<input type="number" id="priceProduct" placeholder="nombre de producto" name="price">
 	</fieldset>
 	<fieldset>
 		<legend>Imagen</legend>
-		<label for="thumbnail"> Imagen de producto: <input type="text" id="thumbnailProduct" placeholder="Ruta de imagen"></label>
+		<label for="thumbnailProduct"> Imagen de producto:</label>
+		<input type="text" id="thumbnailProduct" placeholder="Ruta de imagen" name="thumbnail">
 	</fieldset>
 	<fieldset>
 		<legend>Codigo</legend>
-		<label for="code"> Codigo de producto: <input type="text" id="codeProduct" placeholder="Codigo de producto"></label>
+		<label for="codeProduct"> Codigo de producto:</label>
+		<input type="text" id="codeProduct" placeholder="Codigo de producto" name="code">
 	</fieldset>
 	<fieldset>
 		<legend>Cantidad</legend>
-		<label for="stock"> Cantidad de productos: <input type="number" id="stockProduct" placeholder="Stock de productos"></label>
+		<label for="stockProduct"> Cantidad de productos:</label>
+		<input type="number" id="stockProduct" placeholder="Stock de productos" name="stock">
 	</fieldset>
-	<button id="funcionalidad">Add</button>
+	<button id="agregar" style="visibility: hidden;" type="submit">Add</button>
+	<button style="visibility:hidden" id="actualizar">actualizar</button>
 
 </form>
 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/js/elementos.js"></script>
 <script src="js/realTimeProducts.js"></script>
