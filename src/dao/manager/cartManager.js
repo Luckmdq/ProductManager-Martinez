@@ -37,24 +37,24 @@ export const deleteProductOnCart = async (cartId, productId) => {
         },
       }
     );
-    if (deleted.modifiedCount>0){
+    if (deleted.modifiedCount > 0) {
       return {
-        message:"producto borrado de carrito",
-        succes:true,
-        dato:deleted
-      }
+        message: "producto borrado de carrito",
+        succes: true,
+        dato: deleted,
+      };
     }
-    return{
-      message:"No se ha podido eliminar el producto del carrito",
-      success:false,
-      dato:deleted
-    }
+    return {
+      message: "No se ha podido eliminar el producto del carrito",
+      success: false,
+      dato: deleted,
+    };
   } catch (error) {
-    return{
-      message:"No se pudo eliminar el producto del carrito",
-      success:false,
-      dato:error
-    }
+    return {
+      message: "No se pudo eliminar el producto del carrito",
+      success: false,
+      dato: error,
+    };
   }
 };
 
@@ -84,6 +84,7 @@ export const getById = async (cartId) => {
   }
   return respuesta;
 };
+
 export const getProductsCartById = async (cartId) => {
   const respuesta = {};
   try {
@@ -135,6 +136,47 @@ export const setCart = async (cartID, cart) => {
       ...error,
       sucess: false,
       message: "no modificado",
+    };
+  }
+};
+
+export const setProductOnCart = async (cartID, productId, quantity) => {
+  if (!quantity) {
+    return false;
+  }
+  try {
+    let updateCart = await cartModel.findOne({ _id: cartID });
+    let product = updateCart.products.find(
+      (producto) => producto.product.toString() === productId
+    );
+    if (!product) {
+      return false;
+    }
+    product.quantity = quantity;
+    await updateCart.save();
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
+export const clearCart = async (cartID) => {
+  try {
+    let deleted = await cartModel.updateOne({ _id: cartID }, { products: [] });
+    if (deleted.modifiedCount > 0) {
+      return {
+        success: true,
+        message: "carrito vaciado",
+      };
+    }
+    return {
+      success: false,
+      message: "carrito no vaciado",
+    };
+  } catch (error) {
+    return {
+      message: "error",
+      success: false,
     };
   }
 };

@@ -2,11 +2,12 @@ import { Router } from "express";
 import {
   addCart,
   addProductOnCart,
-  deleteCart,
+  clearCart,
   deleteProductOnCart,
   getById,
   getCarts,
   setCart,
+  setProductOnCart
 } from "../dao/manager/cartManager.js";
 
 /* 
@@ -56,7 +57,7 @@ carts.post("/:CId/:Pid", async (req, res) => {
 
 carts.delete("/:CId", async (req, res) => {
   const { CId } = req.params;
-  let resp = await deleteCart(CId);
+  let resp = await clearCart(CId);
   res.send(resp.message);
 });
 
@@ -75,8 +76,8 @@ carts.put("/:CId", async (req, res) => {
 });
 carts.put("/:CId/products/:PId", async (req, res) => {
   const { CId, PId } = req.params;
-  let cart  = req.body;
-  let respuesta = await setProductOnCart(CId, cart);
+  const {quantity=1}=req.body
+  let respuesta = await setProductOnCart(CId, PId, quantity);
   res.send(respuesta);
 });
 
