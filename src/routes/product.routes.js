@@ -9,16 +9,42 @@ import {
 } from "../dao/manager/productManager.js";
 
 const products = Router();
+/* -limit permitirá devolver sólo el número de elementos solicitados al momento de la petición, en caso de no recibir limit, éste será de 10.
+page permitirá devolver la página que queremos buscar, en caso de no recibir page, ésta será de 1
+query, el tipo de elemento que quiero buscar (es decir, qué filtro aplicar), en caso de no recibir query, realizar la búsqueda general
+sort: asc/desc, para realizar ordenamiento ascendente o descendente por precio, en caso de no recibir sort, no realizar ningún ordenamiento
 
+
+El método GET deberá devolver un objeto con el siguiente formato:
+{
+	status:success/error
+payload: Resultado de los productos solicitados
+totalPages: Total de páginas
+prevPage: Página anterior
+nextPage: Página siguiente
+page: Página actual
+hasPrevPage: Indicador para saber si la página previa existe
+hasNextPage: Indicador para saber si la página siguiente existe.
+prevLink: Link directo a la página previa (null si hasPrevPage=false)
+nextLink: Link directo a la página siguiente (null si hasNextPage=false)
+}
+
+Se deberá poder buscar productos por categoría o por disponibilidad, y se deberá poder realizar un ordenamiento de estos productos de manera ascendente o descendente por precio.
+
+
+
+*/
 products.get("/", async (req, res) => {
-  let { limit } = req.query;
-  let productos = await getProducts();
-  res.send(productos.dato);
+  let { limit=10, page=1, sort='', query='' } = req.query;
+  let rta = await getProducts(limit,page,sort,query);
+  if(!rta){
+    res.status(400).json({message:'not found'})
+  }
+  res.send(rta);
 });
 
 products.post("/", async (req, res) => {
   const product = req.body;
-  console.log(product)
   let respuesta = await addProduct(product);
   res.send(respuesta);
 });
@@ -46,7 +72,7 @@ products.delete("/:PId", async (req, res) => {
 
 products.put("/:PId", async (req, res) => {
   let { PId } = req.params;
-  let  productUpdate  = req.body;
+  let productUpdate = req.body;
   let rta = await modProduct(PId, productUpdate);
   rta ? res.send({ msg: "modificado" }) : res.send({ msg: "no modificado" });
 });
