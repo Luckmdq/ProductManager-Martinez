@@ -24,20 +24,38 @@ export const addCart = async () => {
   return respuesta;
 };
 
-export const deleteProductOnCart = async (cartId) => {
+export const deleteProductOnCart = async (cartId, productId) => {
   const respuesta = {};
   try {
-    let deleted = await cartModel.findOne({ _id: cartId });
-    if (!deleted.deletedCount) {
-      respuesta.message = `carrito no encontrado`;
-      return message;
+    /* utilizando pull que que remove datos de un arraid donde coinciden
+     */
+    let deleted = await cartModel.updateOne(
+      { _id: cartId },
+      {
+        $pull: {
+          products: { product: new mongoose.Types.ObjectId(productId) },
+        },
+      }
+    );
+    if (deleted.modifiedCount>0){
+      return {
+        message:"producto borrado de carrito",
+        succes:true,
+        dato:deleted
+      }
     }
-    respuesta.message = `carrito borrado`;
+    return{
+      message:"No se ha podido eliminar el producto del carrito",
+      success:false,
+      dato:deleted
+    }
   } catch (error) {
-    respuesta.dato = error;
-    respuesta.message = `carrito no borrado`;
+    return{
+      message:"No se pudo eliminar el producto del carrito",
+      success:false,
+      dato:error
+    }
   }
-  return respuesta;
 };
 
 export const deleteCart = async (cartId) => {

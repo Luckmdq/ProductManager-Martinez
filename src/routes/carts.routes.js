@@ -63,7 +63,7 @@ carts.delete("/:CId", async (req, res) => {
 carts.delete("/:CId/products/:PId", async (req, res) => {
   const { CId, PId } = req.params;
   let resp = await deleteProductOnCart(CId, PId);
-  res.send(resp.message);
+  res.send(resp);
 });
 
 /* put */
@@ -71,6 +71,12 @@ carts.put("/:CId", async (req, res) => {
   const { CId } = req.params;
   let cart  = req.body;
   let respuesta = await setCart(CId, cart);
+  res.send(respuesta);
+});
+carts.put("/:CId/products/:PId", async (req, res) => {
+  const { CId, PId } = req.params;
+  let cart  = req.body;
+  let respuesta = await setProductOnCart(CId, cart);
   res.send(respuesta);
 });
 
