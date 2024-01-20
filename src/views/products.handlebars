@@ -5,3 +5,9 @@ Contar con el botón de “agregar al carrito” directamente, sin necesidad de 
 del producto.
 
 --}}
+<h1>
+    Productos
+</h1>
+{{#each payload}}
+<li>nombre:{{this.title}} / Precio: ${{this.price}} // Cantidad: {{this.stock}} </li>
+{{/each}}

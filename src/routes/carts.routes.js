@@ -4,8 +4,8 @@ import {
   addProductOnCart,
   clearCart,
   deleteProductOnCart,
-  getById,
   getCarts,
+  getProductsCartById,
   setCart,
   setProductOnCart
 } from "../dao/manager/cartManager.js";
@@ -33,7 +33,7 @@ carts.get("/", async (req, res) => {
 
 carts.get("/:CId", async (req, res) => {
   const { CId } = req.params;
-  let resp = await getById(CId);
+  let resp = await getProductsCartById(CId);
   if (!resp.dato.name) {
     return res.send(resp.dato);
   }

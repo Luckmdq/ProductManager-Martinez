@@ -32,14 +32,16 @@ export const getProducts = async (limit, page, sort, query) => {
 export const getProducts = async (limit, page, sort, query) => {
   try {
     const [code, value] = query.split(":");
-    const parseProducts = await productModel.paginate(
-      { [code]: value },
-      {
-        limit,
-        page,
-        sort: sort ? { price: sort } : {},
-      }
-    );
+    const parseProducts = await productModel
+      .paginate(
+        { [code]: value },
+        {
+          limit,
+          page,
+          sort: sort ? { price: sort } : {},
+          lean:true
+        }
+      );
     parseProducts.payload = parseProducts.docs;
     delete parseProducts.docs;
     return { message: "ok", ...parseProducts };

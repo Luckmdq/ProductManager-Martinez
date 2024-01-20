@@ -74,17 +74,6 @@ export const deleteCart = async (cartId) => {
   return respuesta;
 };
 
-export const getById = async (cartId) => {
-  const respuesta = {};
-  try {
-    respuesta.dato = await cartModel.findOne({ _id: cartId });
-  } catch (error) {
-    respuesta.dato = error;
-    respuesta.message = "carrito no encontrado";
-  }
-  return respuesta;
-};
-
 export const getProductsCartById = async (cartId) => {
   const respuesta = {};
   try {
