@@ -1,4 +1,3 @@
-console.log('voy a cerrar la cesion')
 const logoutBtn = document.getElementById('logoutBtn');
 
 logoutBtn.addEventListener('click', async (e) => {
