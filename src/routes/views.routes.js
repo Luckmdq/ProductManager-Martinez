@@ -19,14 +19,14 @@ viewsRoutes.get("/register", checkExistingUser, (req, res) => {
   res.render("register");
 });
 
-viewRoutes.get("/restore-password", checkExistingUser, (req, res) => {
+viewsRoutes.get("/restore-password", checkExistingUser, (req, res) => {
   res.render("restore-password");
 });
 
-viewRoutes.get("/faillogin", (req, res) => {
+viewsRoutes.get("/faillogin", (req, res) => {
   res.render("faillogin");
 });
-viewRoutes.get("/failregister", (req, res) => {
+viewsRoutes.get("/failregister", (req, res) => {
   res.render("failregister");
 });
 

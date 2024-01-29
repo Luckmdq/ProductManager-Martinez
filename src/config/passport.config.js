@@ -58,13 +58,12 @@ const initializePassport = () => {
     )
   );
 
-  passport.use(
-    "github",
-    new GithubStrategy({
+  passport.use("github", new GithubStrategy(
+    {
       clientID: "Iv1.509ad65d2b6d55d1",
       callbackURL: "http://localhost:8080/api/session/githubcallback",
       clientSecret: "99068881c09124d1581fa8c5afddb850f84644e8",
-    }),
+    },
     async(accesToken,refreshToken,profile,done)=>{
       try {
         const user=await userModel.findOne({email:profile._json.email})
@@ -83,7 +82,7 @@ const initializePassport = () => {
         return done(error)
       }
     }
-  );
+  ));
 
   passport.serializeUser((user, done) => {
     done(null, user._id);
