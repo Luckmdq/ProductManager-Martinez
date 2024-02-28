@@ -1,32 +1,19 @@
 import { Router } from "express";
 import { userModel } from "../dao/models/user.model.js";
 import passport from "passport";
-import { createHash } from "../utils/bcrypt.js";
+import { createHash } from "../config/bcrypt.js";
 
 const sessionRoutes = Router();
 
-/* sessionRoutes.post(
-  "/register", 
-  async (req, res) => {
-  const { first_name, last_name, email, age, password } = req.body;
-  let rta = await setUsers(first_name, last_name, age, email, password);
-  console.log(!rta.succes);
-  if (!rta.succes) {
-    return res.status(409).send({ message: "User already exists" });
-  }
-  res.redirect("/");
-}); */
-
-/* 
 sessionRoutes.post(
   "/register",
   passport.authenticate("register", { failiredRedirect: "/failregister" }),
   async (req, res) => {
-    res.status(201).send({ message: "user registered" });
+    res.send({ status: "succes", message: "user registered" });
   }
-); */
-
-sessionRoutes.post("/register", async (req, res) => {
+);
+/* 
+sessionRoutes.post("/register",passport.authenticate('register') ,async (req, res) => {
   const { first_name, last_name, email, age, password } = req.body;
   const user = await userModel.findOne({ email });
   if (user) {
@@ -41,7 +28,7 @@ sessionRoutes.post("/register", async (req, res) => {
   };
   await userModel.create(newUser);
   res.status(201).send({ message: "created" });
-});
+}); */
 /* 
 sessionRoutes.post(
   "/login", 
@@ -56,7 +43,7 @@ sessionRoutes.post(
   passport.authenticate("login", { failureRedirect: "/faillogin" }),
   async (req, res) => {
     if (!req.user) {
-      return res.status(400).send({ message: "error with credentials" });
+      return res.status(400).send({ message: "credenciales invalidades" });
     }
     req.session.user = {
       first_name: req.user.first_name,

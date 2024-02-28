@@ -1,13 +1,12 @@
 import passport from "passport";
-
 import local from "passport-local";
 import { userModel } from "../dao/models/user.model.js";
-import { createHash, isValidPassword } from "../utils/bcrypt.js";
+import { createHash, isMatch } from "./bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
 
 const LocalStrategy = local.Strategy;
 
-const initializePassport = () => {
+const inicioPassport = () => {
   passport.use(
     "register",
     new LocalStrategy(
@@ -17,7 +16,6 @@ const initializePassport = () => {
         try {
           const user = await userModel.findOne({ email: username });
           if (user) {
-            console.log("user already exists");
             return done(null, false);
           }
           const newUser = {
@@ -25,29 +23,24 @@ const initializePassport = () => {
             last_name,
             email,
             age,
-            password: createHash(password),
+            password: await createHash(password),
           };
           const result = await userModel.create(newUser);
           return done(null, result);
         } catch (error) {
-          return done("errror to obtain the user" + error);
+          return done(error);
         }
       }
     )
   );
-
   passport.use(
     "login",
     new LocalStrategy(
-      { usernameField: "email" },
+      { passReqToCallback: true, usernameField: "email" },
       async (username, password, done) => {
         try {
-          const user = await userModel.findOne({ email: username });
-          if (!user) {
-            console.log("user doesnt exists");
-            return done(null, false);
-          }
-          if (!isValidPassword(user, password)) {
+          const user = await userModel({ email: username });
+          if (!user || !isMatch(user, password)) {
             return done(null, false);
           }
           return done(null, user);
@@ -57,40 +50,41 @@ const initializePassport = () => {
       }
     )
   );
-
-  passport.use("github", new GithubStrategy(
-    {
-      clientID: "Iv1.509ad65d2b6d55d1",
-      callbackURL: "http://localhost:8080/api/session/githubcallback",
-      clientSecret: "99068881c09124d1581fa8c5afddb850f84644e8",
-    },
-    async(accesToken,refreshToken,profile,done)=>{
-      try {
-        const user=await userModel.findOne({email:profile._json.email})
-        if(!user){
-          let newUser={
-            first_name:profile._json.name.split(' ')[0],
-            last_name:profile._json.name.split(' ')[1],
-            age:18,
-            email:profile._json.email,
-            password:'GithubGenerated'
+  passport.use(
+    "login",
+    new GithubStrategy(
+      {
+        clientID: "Iv1.509ad65d2b6d55d1",
+        callbackURL: "http://localhost:8080/api/session/githubcallback",
+        clientSecret: "9768c0f652e1a2bf0d60846c7f412521ed2bde8f",
+      },
+      async (accesToken, refresToken, profile, done) => {
+        try {
+          const user = await userModel.findOne({ email: profile._json.email });
+          if (!user) {
+            const newUser = new userModel({
+              first_name: profile.json.name.split("")[0],
+              last_name: profile.json.name.split("")[1],
+              age: 15,
+              email: profile._json.email,
+              password: "GitHubGenerated",
+            });
+            const result = await userModel.save();
+            return done(null, result);
           }
-          const result=await userModel.create(newUser);
-          return done(null,result)
+        } catch (error) {
+          return done(error);
         }
-      } catch (error) {
-        return done(error)
       }
-    }
-  ));
-
+    )
+  );
   passport.serializeUser((user, done) => {
-    done(null, user._id);
+    done(null, user);
   });
   passport.deserializeUser(async (id, done) => {
-    const user = await userModel.findOne({ _id: id });
-    done(null, user);
+    const userFind = await userModel.findOne({ _id: id });
+    done(null, userFind._id);
   });
 };
 
-export default initializePassport;
+export default inicioPassport;
