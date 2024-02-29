@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-const cartCollection = "carts";
+const carritoCollection = "carts";
 
-const cartSchema = mongoose.Schema({
+const carritoSchema = mongoose.Schema({
   products: {
     type: [
       {
@@ -17,4 +17,5 @@ const cartSchema = mongoose.Schema({
   },
 });
 
-export const cartModel = mongoose.model(cartCollection, cartSchema);
+const carritoModel = mongoose.model(carritoCollection, carritoSchema);
+export default carritoModel

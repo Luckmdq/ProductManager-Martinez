@@ -1,6 +1,6 @@
 import passport from "passport";
 import local from "passport-local";
-import { userModel } from "../dao/models/user.model.js";
+//import { userModel } from "../models/user.model.js";
 import { createHash, isMatch } from "./bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
 

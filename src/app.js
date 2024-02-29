@@ -1,7 +1,5 @@
-import products from "./routes/product.routes.js";
-import carts from "./routes/carts.routes.js";
-import viewRoutes from "./routes/views.routes.js";
-import sessionRoutes from "./routes/session.routes.js";
+//import viewRoutes from "./routes/views.routes.js";
+//import sessionRoutes from "./routes/session.routes.js";
 
 
 import express from "express";
@@ -19,6 +17,9 @@ import passport from "passport";
 import inicioPassport from "./config/passport.config.js";
 import { obtencionConstantes } from "./config.js";
 
+
+import carritoRutas from "./routes/carrito.routes.js";
+import productosRutas from "./routes/productos.routes.js";
 
 /* la organizacion se me ocurrio sobre la marcha, nose si esta bien, osea el router enruta desde la ruta al utils que es el que almacena los archivos por asi decirlo, nose si esta bien o hay algun otro modo, mas que nada para no matar la persistencia de archivos, por ahi mas adelante se ve otro modo xD */
 
@@ -63,10 +64,10 @@ app.set("views", "src/views");
 app.set("view engine", "handlebars");
 
 /* routes */
-app.use("/api/products", products);
-app.use("/api/carts", carts);
-app.use("/api/session", sessionRoutes);
-app.use("/", viewRoutes);
+app.use("/api/productos", productosRutas);
+app.use("/api/carts", carritoRutas);
+//app.use("/api/session", sessionRoutes);
+//app.use("/", viewRoutes);
 
 const httpServer = app.listen(PORT, () => {
   console.log(`servidor funcionando en ${PORT}`);

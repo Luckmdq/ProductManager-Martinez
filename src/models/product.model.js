@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
+const productoCollection = "products";
 
-const productCollection = "products";
-const productSchema = new mongoose.Schema( {
+const productoSchema = mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -26,22 +26,23 @@ const productSchema = new mongoose.Schema( {
     type: Number,
     required: true,
   },
-  status:{
-    type : Boolean ,
-    required:true
+  status: {
+    type: Boolean,
+    required: true,
   },
   category: {
     type: String,
-    enum:["Paño fijo","Puerta","Corrediza","Abrir"],
-    required:true
+    enum: ["Paño fijo", "Puerta", "Corrediza", "Abrir"],
+    required: true,
   },
-  thunbnail:{
-    type:String,
-    default:"Sin Imagen",
-  }
-  
+  thunbnail: {
+    type: String,
+    default: "Sin Imagen",
+  },
 });
 
-productSchema.plugin(mongoosePaginate)
+productoSchema.plugin(mongoosePaginate);
 
-export const productModel = mongoose.model(productCollection, productSchema);
+const productoModel = mongoose.model(productoCollection, productoSchema);
+
+export default productoModel;

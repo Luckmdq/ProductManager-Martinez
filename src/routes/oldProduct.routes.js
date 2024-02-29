@@ -1,5 +1,5 @@
 import { Router } from "express";
-import {
+/* import {
   addProduct,
   getProducts,
   getById,
@@ -7,8 +7,12 @@ import {
   modProduct,
   getByCode,
 } from "../dao/manager/productManager.js";
+ */import { obtenerProductos } from "../controllers/productos.controller.js";
 
-const products = Router();
+const productos = Router();
+
+productos.get("/", obtenerProductos);
+
 /* -limit permitirá devolver sólo el número de elementos solicitados al momento de la petición, en caso de no recibir limit, éste será de 10.
 page permitirá devolver la página que queremos buscar, en caso de no recibir page, ésta será de 1
 query, el tipo de elemento que quiero buscar (es decir, qué filtro aplicar), en caso de no recibir query, realizar la búsqueda general
@@ -34,11 +38,16 @@ Se deberá poder buscar productos por categoría o por disponibilidad, y se debe
 
 
 */
+
+/*  */
+
+products.get("/", obtenerProductos);
+
 products.get("/", async (req, res) => {
-  let { limit=10, page=1, sort='', query='' } = req.query;
-  let rta = await getProducts(limit,page,sort,query);
-  if(!rta){
-    res.status(400).json({message:'not found'})
+  let { limit = 10, page = 1, sort = "", query = "" } = req.query;
+  let rta = await getProducts(limit, page, sort, query);
+  if (!rta) {
+    res.status(400).json({ message: "not found" });
   }
   res.send(rta);
 });
@@ -138,4 +147,4 @@ products.delete("/:id", (req, res) => {
   res.send({ message: `producto borrado id:${pid}` });
 });
  */
-export default products;
+export default productos;
