@@ -1,24 +1,4 @@
 import productoModel from "../models/product.model.js";
-/* se instancia el servicio */
-
-/* 
-    const [code, value] = query.split(":");
-    const parseProducts = await productModel
-      .paginate(
-        { [code]: value },
-        {
-          limit,
-          page,
-          sort: sort ? { price: sort } : {},
-          lean:true
-        }
-      );
-    parseProducts.payload = parseProducts.docs;
-    delete parseProducts.docs;
-    return { message: "ok", ...parseProducts };
-  } catch (error) {
-    return { message: "error", dato: error };
-  } */
 
 export default class Productos {
   obtenerProductos = async (limite, pagina, ordenar, buscar) => {

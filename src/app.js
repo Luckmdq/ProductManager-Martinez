@@ -65,7 +65,7 @@ app.set("view engine", "handlebars");
 
 /* routes */
 app.use("/api/productos", productosRutas);
-app.use("/api/carts", carritoRutas);
+app.use("/api/carritos", carritoRutas);
 //app.use("/api/session", sessionRoutes);
 //app.use("/", viewRoutes);
 

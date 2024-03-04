@@ -1,14 +1,7 @@
 import productos from "../dao/productos.dao.js";
 
-/* obtengo accesos req,res salen de aca instanciando una clase de productos */
-
-/* let { limit = 10, page = 1, sort = "", query = "" } = req.query;
-  let rta = await getProducts(limit, page, sort, query);
-  if (!rta) {
-    res.status(400).json({ message: "not found" });
-  }
-  res.send(rta); */
 const servicio = new productos();
+
 export const obtenerProductos = async (req, res) => {
   try {
     let { limite = 10, pagina = 1, ordenar = "", buscar = "" } = req.query;
