@@ -1,4 +1,4 @@
-import productoModel from "../models/product.model.js";
+import productoModel from "./models/product.model.js";
 
 export default class Productos {
   obtenerProductos = async (limite, pagina, ordenar, buscar) => {
@@ -31,6 +31,7 @@ export default class Productos {
   };
 
   obtenerPorId = async (id) => {
+    console.log(id)
     try {
       const respuesta = await productoModel.findById(id).lean();
       return respuesta;

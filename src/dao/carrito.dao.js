@@ -1,4 +1,4 @@
-import carritoModel from "../models/cart.model.js";
+import carritoModel from "./models/cart.model.js";
 
 export default class carritos {
   obtenerCarritos = async () => {

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const userCollection = "users";
-const userSchema = mongoose.Schema({
+const usurioCollection = "users";
+const usuarioSchema = mongoose.Schema({
   first_name: {
     type: String,
     required: true,
@@ -33,6 +33,6 @@ const userSchema = mongoose.Schema({
   },
 });
 
-const userModel = mongoose.model(userCollection, userSchema);
+const usuarioModel = mongoose.model(usurioCollection, usuarioSchema);
 
-export default userModel;
+export default usuarioModel;
