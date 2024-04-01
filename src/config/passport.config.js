@@ -1,9 +1,7 @@
 import passport from "passport";
 import local from "passport-local";
-import { isMatch } from "./bcrypt.js";
 import { Strategy as GithubStrategy } from "passport-github2";
 import usuario from "../dao/usuario.dao.js";
-import { ingreso } from "../controllers/usuario.controller.js";
 
 const usuarioInstancia = new usuario();
 const LocalStrategy = local.Strategy;
@@ -14,24 +12,28 @@ const inicioPassport = () => {
     "register",
     new LocalStrategy(
       { passReqToCallback: true, usernameField: "email", session: false },
-      async (req, password, done) => {
+      async (req,email, password, done) => {
         try {
-          const { first_name, last_name, email, age } = req.body;
-          const result = await usuarioInstancia.crear(
+          const { first_name, last_name, email, age, role = "user" } = req.body;
+          let result = await usuarioInstancia.existente(email);
+          console.log()
+          if (!!result) {
+            done(null, false ,{message:"usuario Existente"});
+            return;
+          }
+          result = await usuarioInstancia.crear(
             first_name,
             last_name,
             email,
             age,
             password,
-            "usuario"
+            role
           );
-          if (!result) {
-            console.log("usuario existente");
-            return done(null, false); //si no se crea el usuario retorna falso
-          }
-          return done(null, result);
+          done(null, result);
+          return;
         } catch (error) {
-          return done(error);
+          done(error)
+          return;
         }
       }
     )
@@ -67,8 +69,8 @@ const inicioPassport = () => {
         try {
           console.log(profile._json.email);
           const result = await usuarioInstancia.crear(
-            profile._json.name.split("")[0],
-            profile._json.name.split("")[1],
+            profile._json.name.split(" ")[0],
+            profile._json.name.split(" ")[1],
             profile._json.email,
             15,
             "GitHubGenerated",
@@ -85,25 +87,6 @@ const inicioPassport = () => {
       }
     )
   );
-  /* 
-        try {
-
-          console.log(profile)
-          const user = await usuarioInstancia.existente(profile._json.email );
-          if (!user) {
-            const newUser = new userModel({
-              first_name: profile.json.name.split("")[0],
-              last_name: profile.json.name.split("")[1],
-              age: 15,
-              email: profile._json.email,
-              password: "GitHubGenerated",
-            });
-            const result = await userModel.save();
-            return done(null, result);
-          }
-        } catch (error) {
-          return done(error);
-        } */
   passport.serializeUser((user, done) => {
     done(null, user);
   });

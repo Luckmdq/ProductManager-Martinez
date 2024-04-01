@@ -3,7 +3,6 @@ import usuario from "../dao/usuario.dao.js";
 const servicio = new usuario();
 
 export const registro = async (req, res) => {
-  console.log("registrando")
   res.send({ status: "succes", message: "user registered" });
 };
 

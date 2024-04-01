@@ -11,9 +11,22 @@ const sessionRoutes = Router();
 
 sessionRoutes.post(
   "/register",
-  passport.authenticate("register", { failiredRedirect: "/failregister" }),
-  registro
+  passport.authenticate("register", {
+    passReqToCallback: true,
+    session: false,
+    failureRedirect: "failregister",
+    failureMessage: true,
+  }),
+  (req, res) => {
+    res.send({
+      status: "success",
+      message: "user registered",
+      payload: req.user._id,
+    });
+  }
 );
+
+sessionRoutes.post("/failregister",(req,res)=>res.render("failregister"));
 
 sessionRoutes.post(
   "/login",
@@ -29,7 +42,7 @@ sessionRoutes.get(
   "/github",
   passport.authenticate("github", { scope: ["user:email"] }),
   (req, res) => {
-    console.log("ando por aca")
+    console.log("ando por aca");
   }
 );
 
@@ -37,7 +50,7 @@ sessionRoutes.get(
   "/githubcallback",
   passport.authenticate("github", { failureRedirect: "/login" }),
   (req, res) => {
-    console.log("ando por acaa")
+    console.log("ando por acaa");
     req.session.user = req.user;
     res.redirect("/");
   }

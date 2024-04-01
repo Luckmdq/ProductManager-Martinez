@@ -9,26 +9,33 @@ export default class usuario {
   buscaId = async (_id) => {
     return await usuarioModel.findById(_id);
   };
-  crear = async (
-    first_name,
-    last_name,
-    email,
-    age,
-    password,
-    role = "user"
-  ) => {
+  crear = async (first_name, last_name, email, age, password, role) => {
     /* cartId*/
     try {
       const userExist = await this.existente(email);
-      if (!userExist) {
+      const opcionesFetch = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      console.log(!!userExist);
+      if (!!userExist) {
         return userExist;
       }
+      let carrito = await fetch(
+        "http://localhost:8080/api/carritos/",
+        opcionesFetch
+      )
+        .then((respuesta) => respuesta.json())
+        .catch(console.error);
       const newUser = await new usuarioModel({
         first_name: first_name,
         last_name: last_name,
         email: email,
         age: age,
         password: createHash(password),
+        cart:carrito._id,
         role: role,
       });
       return await usuarioModel.create(newUser);
