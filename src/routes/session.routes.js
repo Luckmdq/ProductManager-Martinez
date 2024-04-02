@@ -21,18 +21,42 @@ sessionRoutes.post(
     res.send({
       status: "success",
       message: "user registered",
-      payload: req.user._id,
+      payload: req.user,
     });
   }
 );
-
-sessionRoutes.post("/failregister",(req,res)=>res.render("failregister"));
+/* fallo de registro */
+sessionRoutes.post("/failregister", (req, res) => {
+  if (!!req.session.passport.user) {
+    console.log("usuario Registrado");
+    res.render("failregister");
+    return;
+  }
+  console.log("fallo en registro");
+  res.render("failregister");
+  return;
+});
 
 sessionRoutes.post(
   "/login",
-  passport.authenticate("login", { failureRedirect: "/faillogin" }),
-  await ingreso
+  passport.authenticate("login", {
+    session: false,
+    failureRedirect: "/faillogin",
+  }),
+  ingreso
 );
+
+/* fallo de registro */
+sessionRoutes.post("/faillogin", (req, res) => {
+  if (!!req.session.passport.user) {
+    console.log("usuario ya ingresado");
+    res.render("faillogin");
+    return;
+  }
+  console.log("fallo en credenciales");
+  res.render("faillogin");
+  return;
+});
 
 sessionRoutes.post("/logout", egreso);
 

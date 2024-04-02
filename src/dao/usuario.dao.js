@@ -7,7 +7,10 @@ export default class usuario {
     return await usuarioModel.findOne({ email });
   };
   buscaId = async (_id) => {
-    return await usuarioModel.findById(_id);
+    console.log(`Buscando el id ${_id}`);
+    let resultado = await usuarioModel.findOne({ _id: _id });
+    console.log(`el resultado :${typeof(resultado)}`);
+    return resultado;
   };
   crear = async (first_name, last_name, email, age, password, role) => {
     /* cartId*/
@@ -19,7 +22,6 @@ export default class usuario {
           "Content-Type": "application/json",
         },
       };
-      console.log(!!userExist);
       if (!!userExist) {
         return userExist;
       }
@@ -34,8 +36,8 @@ export default class usuario {
         last_name: last_name,
         email: email,
         age: age,
-        password: createHash(password),
-        cart:carrito._id,
+        password: await createHash(password),
+        cart: carrito._id,
         role: role,
       });
       return await usuarioModel.create(newUser);
@@ -47,7 +49,7 @@ export default class usuario {
   ingreso = async (email, password) => {
     try {
       const user = await this.existente(email);
-      return !user & !(await isMatch(user, password)) ? false : user;
+      return (!user && !(await isMatch(user, password))) ? false : user;
     } catch (error) {
       console.log(error);
     }

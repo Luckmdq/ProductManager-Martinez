@@ -12,13 +12,12 @@ const inicioPassport = () => {
     "register",
     new LocalStrategy(
       { passReqToCallback: true, usernameField: "email", session: false },
-      async (req,email, password, done) => {
+      async (req, email, password, done) => {
         try {
           const { first_name, last_name, email, age, role = "user" } = req.body;
           let result = await usuarioInstancia.existente(email);
-          console.log()
           if (!!result) {
-            done(null, false ,{message:"usuario Existente"});
+            done(null, false, { message: "usuario Existente" });
             return;
           }
           result = await usuarioInstancia.crear(
@@ -32,7 +31,7 @@ const inicioPassport = () => {
           done(null, result);
           return;
         } catch (error) {
-          done(error)
+          done(error);
           return;
         }
       }
@@ -56,6 +55,16 @@ const inicioPassport = () => {
       }
     )
   );
+
+  /*   passport.use(
+    "login",
+    new LocalStrategy(
+      { usernameField: "email", session: false },
+      async (email, password, done) => {
+        
+      }
+    )
+  ); */
   /* login github */
   passport.use(
     "github",
@@ -88,11 +97,11 @@ const inicioPassport = () => {
     )
   );
   passport.serializeUser((user, done) => {
-    done(null, user);
+    done(null, user._id);
   });
-  passport.deserializeUser(async (id, done) => {
-    const userFind = await usuarioInstancia.buscaId(id);
-    done(null, userFind._id);
+  passport.deserializeUser(async (user, done) => {
+    const userFind = await usuarioInstancia.buscaId(user._id);
+    done(null, userFind);
   });
 };
 

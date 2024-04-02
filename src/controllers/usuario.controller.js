@@ -8,9 +8,12 @@ export const registro = async (req, res) => {
 
 
 export const ingreso = async (req, res) => {
+  console.log("aca ando")
+  console.log(req.user)
   if (!req.user) {
     return res.status(400).send({ message: "credenciales invalidades" });
   }
+  /* guarda absolutamente todas las credenciales, ideal solo el ID hasheado en una cookie? */
   req.session.user = {
     first_name: req.user.first_name,
     last_name: req.user.last_name,
