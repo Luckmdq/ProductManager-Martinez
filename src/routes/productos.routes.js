@@ -6,7 +6,7 @@ import {
   obtenerPorCodigo,
   obtenerPorId,
   obtenerProductos,
-} from "../controllers/productos.controller.js";
+} from "../dto/controllers/productos.controller.js";
 
 const productosRutas = Router();
 

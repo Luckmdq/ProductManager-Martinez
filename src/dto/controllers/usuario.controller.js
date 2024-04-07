@@ -1,30 +1,28 @@
-import usuario from "../dao/usuario.dao.js";
+import usuario from "../../dao/usuario.dao.js";
+import { generacionToken } from "../config/jwt.config.js";
 
 const servicio = new usuario();
 
 export const registro = async (req, res) => {
-  res.send({ status: "succes", message: "user registered" });
+  if(!req.user){
+    console.log("error al ingresar")
+  }
+  const token = await generacionToken(req.user);
+  res.cookie("cookieAuth", token, { maxAge: 36000 }).redirect({redirect:"http://localhost:8080/"});
 };
 
-
 export const ingreso = async (req, res) => {
-  console.log("aca ando")
-  console.log(req.user)
   if (!req.user) {
     return res.status(400).send({ message: "credenciales invalidades" });
   }
-  /* guarda absolutamente todas las credenciales, ideal solo el ID hasheado en una cookie? */
-  req.session.user = {
-    first_name: req.user.first_name,
-    last_name: req.user.last_name,
-    age: req.user.age,
-    email: req.user.email,
-  };
-  res.redirect("/");
+  const token = await generacionToken(req.user);
+  /* seteo de tiempo de expiracion */
+  res.cookie("cookieAuth", token,{expire : new Date() + 9999} ).redirect("/");
 };
 
 export const egreso = async (req, res) => {
   try {
+    console.log(req.cookies)
     req.session.destroy((err) => {
       if (err) {
         return res.status(500).json({ message: "logount failed" });

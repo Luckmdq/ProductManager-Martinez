@@ -1,4 +1,4 @@
-import Productos from "../dao/productos.dao.js"
+import Productos from "../../dao/productos.dao.js"
 
 const servicios=new Productos()
 

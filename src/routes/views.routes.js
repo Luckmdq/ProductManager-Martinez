@@ -1,40 +1,43 @@
 import Axios from "axios";
 import { Router } from "express";
 import { getProducts } from "../dao/manager/productManager.js";
-import { checkAout, checkExistingUser } from "../middlewares/outh.js";
+import { authToken } from "../dto/config/jwt.config.js";
 
 const viewsRoutes = Router();
 
 /* Usuarios */
-viewsRoutes.get("/", checkAout, (req, res) => {
-  const { user } = req.session;
-  res.render("index", user);
+viewsRoutes.get("/", authToken, (req, res) => {
+  res.render("index", req.user);
 });
 
-viewsRoutes.get("/login", checkExistingUser, (req, res) => {
-  res.render("login");
+viewsRoutes.get("/login", authToken, (req, res) => {
+  if (!req.user) {
+    res.render("login");
+  }
+  res.redirect("/");
 });
 
-viewsRoutes.get("/register", checkExistingUser, (req, res) => {
-  res.render("register");
+viewsRoutes.get("/register", authToken, (req, res) => {
+  if (!req.user) {
+    res.render("register");
+  }
+  res.redirect("/");
 });
 
-viewsRoutes.get("/restore-password", checkExistingUser, (req, res) => {
-  res.render("restore-password");
-});
-
-viewsRoutes.get("/faillogin", (req, res) => {
-  res.render("faillogin");
-});
-viewsRoutes.get("/failregister", (req, res) => {
-  res.render("failregister");
+viewsRoutes.get("/restore-password", authToken, (req, res) => {
+  if (!req.user) {
+    res.render("restore-password");
+  }
+  res.redirect("/");
 });
 
 viewsRoutes.get("/home", async (req, res) => {
-  const { data: productos } = await Axios.get(
-    "http://localhost:8080/api/products"
-  );
-  return res.render("home", { productos });
+  await fetch("http://localhost:8080/api/productos/")
+    .then((respuesta) => respuesta.json())
+    .then((data) => {
+      console.log("respuesta",data)
+      return res.render("home", { data });
+    });
 });
 
 /* productos */

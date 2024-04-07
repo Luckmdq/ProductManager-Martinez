@@ -1,12 +1,10 @@
-import productos from "../dao/productos.dao.js";
+import productos from "../../dao/productos.dao.js";
 
 const servicio = new productos();
 
 export const obtenerProductos = async (req, res) => {
   try {
     let { limite = 10, pagina = 1, ordenar = "", buscar = "" } = req.query;
-    const [code, value] = req.query.buscar.split(":");
-
     const resultado = await servicio.obtenerProductos(
       limite,
       pagina,

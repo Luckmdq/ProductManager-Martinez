@@ -1,4 +1,4 @@
-import carritos from "../dao/carrito.dao.js";
+import carritos from "../../dao/carrito.dao.js";
 
 const servicio = new carritos();
 

@@ -1,8 +1,10 @@
 {{!-- Lista con productosagregados hasta el momento --}}
 <h1>Lista de productos</h1>
-
+	{{data.totalDocs}}
 <ul>
-	{{#each productos}}
+	{{#each data.payload}}
 	<li>nombre:{{this.title}} / Precio: ${{this.price}} // Cantidad: {{this.stock}} </li>
 	{{/each}}
 </ul>
+<button><a href="/register">Registrarse</a></button>
+<button><a href="/login">Ingresar</a></button>

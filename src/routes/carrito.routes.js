@@ -15,8 +15,8 @@ import {
   obtenerCarrito,
   obtenerCarritos,
 	actualizar,
-} from "../controllers/carrito.controller.js";
-import { existeProducto } from "../middlewares/productos.js";
+} from "../dto/controllers/carrito.controller.js";
+import { existeProducto } from "../dto/middlewares/productos.js";
 
 
 const carritoRutas = Router();

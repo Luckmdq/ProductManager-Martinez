@@ -5,7 +5,7 @@ import {
   ingreso,
   registro,
   restauracionContraseña,
-} from "../controllers/usuario.controller.js";
+} from "../dto/controllers/usuario.controller.js";
 
 const sessionRoutes = Router();
 
@@ -17,13 +17,7 @@ sessionRoutes.post(
     failureRedirect: "failregister",
     failureMessage: true,
   }),
-  (req, res) => {
-    res.send({
-      status: "success",
-      message: "user registered",
-      payload: req.user,
-    });
-  }
+  registro
 );
 /* fallo de registro */
 sessionRoutes.post("/failregister", (req, res) => {

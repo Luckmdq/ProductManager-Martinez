@@ -1,10 +1,19 @@
 import dotenv from "dotenv";
 
-export const obtencionConstantes = () => {
+export const obtencionConstantes = (conjunto) => {
   dotenv.config({ path: "src/.env" });
-  return ({
-    PORT: process.env.PORT||3000 ,
-    BD_STRING: process.env.BD_STRING,
-    SESSION_SECRET:process.env.SESSION_SECRET || 'secret',
-  });
+  switch (conjunto) {
+    case "bd":
+      return {
+        PORT: process.env.PORT || 3000,
+        BD_STRING: process.env.BD_STRING,
+        SESSION_SECRET: process.env.PRIVATE_KEY || "secret",
+      };
+      break;
+    case "jwt":
+      return {
+        SECRET: process.env.PRIVATE_KEY,
+      };
+      break;
+  }
 };

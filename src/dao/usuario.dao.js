@@ -1,4 +1,4 @@
-import { createHash, isMatch } from "../config/bcrypt.js";
+import { createHash, isMatch } from "../dto/config/bcrypt.js";
 import usuarioModel from "./models/usuario.model.js";
 /* creacion de usuario */
 

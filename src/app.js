@@ -31,7 +31,7 @@ import MongoStore from "connect-mongo";
 import session from "express-session";
 import FileStore from "session-file-store";
 import passport from "passport";
-import inicioPassport from "./config/passport.config.js";
+import inicioPassport from "./dto/config/passport.config.js";
 import { obtencionConstantes } from "./config.js";
 
 
@@ -43,7 +43,7 @@ import productosRutas from "./routes/productos.routes.js";
 /* inicializacion express */
 const fileStore = FileStore(session);
 const app = express();
-const {PORT,BD_STRING,SESSION_SECRET} = obtencionConstantes();
+const {PORT,BD_STRING,SESSION_SECRET} = obtencionConstantes("bd");
 
 
 const hbs = handlebars.create({

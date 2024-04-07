@@ -1,7 +1,7 @@
 import passport from "passport";
 import local from "passport-local";
 import { Strategy as GithubStrategy } from "passport-github2";
-import usuario from "../dao/usuario.dao.js";
+import usuario from "../../dao/usuario.dao.js";
 
 const usuarioInstancia = new usuario();
 const LocalStrategy = local.Strategy;
