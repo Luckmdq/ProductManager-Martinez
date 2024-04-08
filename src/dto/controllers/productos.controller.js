@@ -1,4 +1,5 @@
 import productos from "../../dao/productos.dao.js";
+import { productoGenerado } from "../config/mock.js";
 
 const servicio = new productos();
 
@@ -77,4 +78,12 @@ export const actualizarProducto = async (req, res) => {
   return respuesta
     ? res.status(201).json({ mensaje: "modificado" })
     : res.status(500).json({ mensaje: "hubo un error" });
+};
+
+export const productosGenerados = async (req, res) => {
+  const productos = [];
+  for (let i =0  ;i < 100; i++){
+    productos.push(productoGenerado())
+  }
+  res.json({ status: "succes", payload: productos });
 };
