@@ -1,0 +1,7 @@
+export const ErrorEnum = {
+  ROUTING_ERROR: 1,
+  INVALID_TYPE_ERROR: 2,
+  DATABASE_ERROR: 3,
+  INVALID_PARAM_ERROR: 4,
+  USER_NOT_FOUND_ERROR: 5,
+};
