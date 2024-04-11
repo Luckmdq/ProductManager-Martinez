@@ -61,7 +61,6 @@ const produccionLogger = winston.createLogger({
 });
 
 export const addLogger = (req, res, next) => {
-  console.log(process.env.NODE_ENV==='produccion')
   switch(process.env.NODE_ENV){
     case 'desarollo': 
       req.logger=desarrolloLogger; 

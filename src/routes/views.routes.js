@@ -27,6 +27,7 @@ viewsRoutes.get("/register", authToken, (req, res) => {
 viewsRoutes.get("/restore-password", authToken, (req, res) => {
   if (!req.user) {
     res.render("restore-password");
+    return;
   }
   res.redirect("/");
 });
@@ -35,7 +36,7 @@ viewsRoutes.get("/home", async (req, res) => {
   await fetch("http://localhost:8080/api/productos/")
     .then((respuesta) => respuesta.json())
     .then((data) => {
-      console.log("respuesta",data)
+      console.log("respuesta", data);
       return res.render("home", { data });
     });
 });

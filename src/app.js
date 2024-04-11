@@ -93,14 +93,6 @@ app.use("/api/carritos", carritoRutas);
 app.use("/api/session", sessionRoutes);
 app.use("/", viewRoutes);
 
-app.get("/loggerTest", (req, res) => {
-  req.logger.info("Hola soy un log de info");
-  req.logger.warning("Esto es un warning");
-  req.logger.error("Esto es un error");
-  req.logger.fatal("Esto es un error FATAL");
-  req.logger.debug("Esto es un debug");
-  res.send({ message: "Error de prueba!" });
-});
 
 const httpServer = app.listen(PORT, () => {
   console.log(`servidor funcionando en ${PORT}`);

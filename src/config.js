@@ -15,5 +15,13 @@ export const obtencionConstantes = (conjunto) => {
         SECRET: process.env.PRIVATE_KEY,
       };
       break;
+    case "mail":
+      return {
+        SERVICE: process.env.MAIL_SERVICE,
+        PORT: process.env.MAIL_PORT,
+        USER: process.env.MAIL_USER,
+        PASS: process.env.MAIL_KEY,
+      };
+      break;
   }
 };

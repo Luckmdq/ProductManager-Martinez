@@ -3,6 +3,7 @@ import passport from "passport";
 import {
   egreso,
   ingreso,
+  mailing,
   registro,
   restauracionContraseña,
 } from "../dto/controllers/usuario.controller.js";
@@ -55,6 +56,11 @@ sessionRoutes.post("/faillogin", (req, res) => {
 sessionRoutes.post("/logout", egreso);
 
 sessionRoutes.post("/restore-password", restauracionContraseña);
+
+
+sessionRoutes.get("/mail", mailing);
+
+
 
 sessionRoutes.get(
   "/github",
