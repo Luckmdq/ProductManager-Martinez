@@ -1,24 +1,27 @@
-/* Generar un módulo de Mocking para el servidor, con el fin de que, al inicializarse pueda generar y entregar 100 productos con el mismo formato que entregaría una petición de Mongo. Ésto solo debe ocurrir en un endpoint determinado (‘/mockingproducts’)
+/*
+**Cambiar todo error
 
-Además, generar un customizador de errores y crear un diccionario para tus errores más comunes al crear un producto, agregarlo al carrito, etc.
+Realizar un sistema de recuperación de contraseña, la cual envíe por medio de un correo un botón que redireccione a una página para restablecer la contraseña (no recuperarla).
+  link del correo debe expirar después de 1 hora de enviado.
+  Si se trata de restablecer la contraseña con la misma contraseña del usuario, debe impedirlo e indicarle que no se puede colocar la misma contraseña
+  Si el link expiró, debe redirigir a una vista que le permita generar nuevamente el correo de restablecimiento, el cual contará con una nueva duración de 1 hora.
 
-definir un sistema de niveles que tenga la siguiente prioridad (de menor a mayor):
-debug, http, info, warning, error, fatal
- 
-implementar un logger para desarrollo y un logger para producción, el logger de desarrollo deberá loggear a partir del nivel debug, sólo en consola
+Establecer un nuevo rol para el schema del usuario llamado “premium” el cual estará habilitado también para crear productos
+Modificar el schema de producto para contar con un campo “owner”, el cual haga referencia a la persona que creó el producto
+  Si un producto se crea sin owner, se debe colocar por defecto “admin”.
+  El campo owner deberá guardar sólo el correo electrónico (o _id, lo dejamos a tu conveniencia) del usuario que lo haya creado (Sólo podrá recibir usuarios premium)
+Modificar los permisos de modificación y eliminación de productos para que:
+Un usuario premium sólo pueda borrar los productos que le pertenecen.
+El admin pueda borrar cualquier producto, aún si es de un owner.
 
-Sin embargo, el logger del entorno productivo debería loggear sólo a partir de nivel info.
-Además, el logger deberá enviar en un transporte de archivos a partir del nivel de error en un nombre “errors.log”
-Agregar logs de valor alto en los puntos importantes de tu servidor (errores, advertencias, etc) y modificar los console.log() habituales que tenemos para que muestren todo a partir de winston.
-Crear un endpoint /loggerTest que permita probar todos los logs
+Se debe tener documentado el módulo de productos.
+Se debe tener documentado el módulo de carrito
+No realizar documentación de sesiones
 
 
  */
-
 import viewRoutes from "./routes/views.routes.js";
 import sessionRoutes from "./routes/session.routes.js";
-
-
 
 import express from "express";
 import Axios from "axios";
@@ -35,17 +38,15 @@ import passport from "passport";
 import inicioPassport from "./dto/config/passport.config.js";
 import { obtencionConstantes } from "./config.js";
 
-
 import carritoRutas from "./routes/carrito.routes.js";
 import productosRutas from "./routes/productos.routes.js";
 import { ErrorHandler } from "./dto/config/errors/error.js";
-
+import { addLogger } from "./dto/config/logger.js";
 
 /* inicializacion express */
 const fileStore = FileStore(session);
 const app = express();
-const {PORT,BD_STRING,SESSION_SECRET} = obtencionConstantes("bd");
-
+const { PORT, BD_STRING, SESSION_SECRET } = obtencionConstantes("bd");
 
 const hbs = handlebars.create({
   runtimeOptions: {
@@ -71,9 +72,14 @@ app.use(
   })
 );
 
-inicioPassport()
+inicioPassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+/* manejo de errores */
+
+app.use(ErrorHandler);
+app.use(addLogger);
 
 /* handlebars */
 
@@ -87,17 +93,20 @@ app.use("/api/carritos", carritoRutas);
 app.use("/api/session", sessionRoutes);
 app.use("/", viewRoutes);
 
+app.get("/loggerTest", (req, res) => {
+  req.logger.info("Hola soy un log de info");
+  req.logger.warning("Esto es un warning");
+  req.logger.error("Esto es un error");
+  req.logger.fatal("Esto es un error FATAL");
+  req.logger.debug("Esto es un debug");
+  res.send({ message: "Error de prueba!" });
+});
+
 const httpServer = app.listen(PORT, () => {
   console.log(`servidor funcionando en ${PORT}`);
 });
 
-/* manejo de errores */
-
-app.use(ErrorHandler)
-
 /* inicializacion web socket */
-
-
 
 const io = new Server(httpServer);
 
