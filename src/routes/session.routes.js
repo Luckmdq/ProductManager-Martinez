@@ -58,10 +58,6 @@ sessionRoutes.post("/logout", egreso);
 sessionRoutes.post("/restore-password", restauracionContraseña);
 
 
-sessionRoutes.get("/mail", mailing);
-
-
-
 sessionRoutes.get(
   "/github",
   passport.authenticate("github", { scope: ["user:email"] }),

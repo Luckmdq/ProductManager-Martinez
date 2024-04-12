@@ -1,3 +1,5 @@
+/* falta configurar mail de envio */
+
 import usuario from "../../dao/usuario.dao.js";
 import { generacionToken } from "../config/jwt.config.js";
 import { recuperacion } from "../config/mail.js";
@@ -38,19 +40,16 @@ export const egreso = async (req, res) => {
 };
 
 export const restauracionContraseña = async (req, res) => {
-  const { email, password } = req.body;
-  try {
-    const user = await userModel.findOne({ email });
-    if (!user) {
-      return res.status(401).send({ message: "unauthorized" });
-    }
-    user.password = createHash(password);
-    await user.save();
-    res.send({ message: "password updated" });
-  } catch (error) {
-    console.log(error);
-    res.status(400).send({ error });
+  const { email } = req.body;
+  let user =await servicio.existente( email );
+  if(!user){
+    req.logger.info("no existe usuario")
   }
+  // se genera un token de ingreso(hasheando el id)
+  const token=await generacionToken(user)
+  //una vez obtenido se manda junto al mail para acceder a una pagina de restauracion:
+  let respuesta= await recuperacion(token)
+  console.log(respuesta)
 };
 
 export const mailing = async (req, res) => {

@@ -10,7 +10,7 @@ const transporte = nodemailer.createTransport({
     pass: MAIL.PASS,
   },
 });
-export const recuperacion = () => {
+export const recuperacion = (token) => {
   try {
     const result = transporte.sendMail({
       from: `La pagina de prueba <${MAIL.USER}>`,
@@ -19,6 +19,7 @@ export const recuperacion = () => {
       html: `
             <div>
               <h1>buenas la que quieras, necesito que te metas aca sin perder el tiempo y recuperes tu contraseña</h1>
+              <a>link: ${token}</>
             </div>
           `,
     });

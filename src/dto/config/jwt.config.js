@@ -3,6 +3,20 @@ import { obtencionConstantes } from "../../config.js";
 
 const { SECRET } = obtencionConstantes("jwt");
 
+const firmaToken = async (payload) => {
+  return await jwt.sign(payload, SECRET, { expiresIn: "1h" });
+};
+
+const verificacionToken = async (token) => {
+  jwt.verify(token, SECRET,(err,resultado)=>{
+    if(err){
+      req.logger.error("fallo en la validacion:"+err)
+      return false
+    }
+    return resultado
+  });
+};
+
 export const generacionToken = async (usuario) => {
   const serializedUser = {
     id: usuario._id,
@@ -10,10 +24,10 @@ export const generacionToken = async (usuario) => {
     role: usuario.role,
     email: usuario.email,
   };
-  return await jwt.sign(serializedUser, SECRET, { expiresIn: "24h" });
+  return await firmaToken(serializedUser);
 };
 
-export const authToken = (req, res, next) => {
+export const authToken = async (req, res, next) => {
   //extraigo las cookies con autorizaciones para filtrarlas
   const cookies = req.headers.cookie;
   let cookieAuth = cookies
@@ -24,6 +38,12 @@ export const authToken = (req, res, next) => {
     return next();
   }
   const token = cookieAuth.split("=")[1];
+  let valido=await verificacionToken(token)
+  if (!valido){
+    return res.render({mensaje:"token alterado"})
+  }
+  req.user = valido;
+  next();/* 
   jwt.verify(token, SECRET, (err, credenciales) => {
     if (err) {
       return res.render("login", {
@@ -32,5 +52,5 @@ export const authToken = (req, res, next) => {
     }
     req.user = credenciales;
     next();
-  });
+  }); */
 };

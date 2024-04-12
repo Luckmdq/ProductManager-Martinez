@@ -32,6 +32,12 @@ viewsRoutes.get("/restore-password", authToken, (req, res) => {
   res.redirect("/");
 });
 
+viewsRoutes.get("/restore-password/:token", (req, res) => {
+  const token = req.params.token;
+  
+  console.log(token)
+});
+
 viewsRoutes.get("/home", async (req, res) => {
   await fetch("http://localhost:8080/api/productos/")
     .then((respuesta) => respuesta.json())
