@@ -1,0 +1,9 @@
+<h1>Nueva contraseña</h1>
+<p>
+
+    {{this.id}}
+</p>
+<form action='/api/session/actualizar/{{this.id}}' method="post">
+    <label>Contraseña: </label> <input type="password" name="password" /> <br /><br />
+    <button type="submit">Restaurar contraseña</button>
+</form>

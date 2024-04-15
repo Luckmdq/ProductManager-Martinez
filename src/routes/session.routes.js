@@ -1,9 +1,9 @@
 import { Router } from "express";
 import passport from "passport";
 import {
+  actualizar,
   egreso,
   ingreso,
-  mailing,
   registro,
   restauracionContraseña,
 } from "../dto/controllers/usuario.controller.js";
@@ -54,6 +54,8 @@ sessionRoutes.post("/faillogin", (req, res) => {
 });
 
 sessionRoutes.post("/logout", egreso);
+
+sessionRoutes.post("/actualizar/:id", actualizar);
 
 sessionRoutes.post("/restore-password", restauracionContraseña);
 

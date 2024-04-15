@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { Router } from "express";
 import { getProducts } from "../dao/manager/productManager.js";
-import { authToken } from "../dto/config/jwt.config.js";
+import { authToken, verificacionToken } from "../dto/config/jwt.config.js";
 
 const viewsRoutes = Router();
 
@@ -32,10 +32,23 @@ viewsRoutes.get("/restore-password", authToken, (req, res) => {
   res.redirect("/");
 });
 
-viewsRoutes.get("/restore-password/:token", (req, res) => {
-  const token = req.params.token;
-  
-  console.log(token)
+viewsRoutes.get("/restore-password/:token", async (req, res) => {
+  try {
+    const token = req.params.token;
+    const verificado = await verificacionToken(token);
+    if (!verificado) {
+      res.send({ mensaje: "Acceso no autorizado" });
+      return;
+    }
+    console.log(verificado)
+    return res.render("new-contraseña", verificado );
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+viewsRoutes.get("/new-password", (req, res) => {
+  res.render("new-password");
 });
 
 viewsRoutes.get("/home", async (req, res) => {

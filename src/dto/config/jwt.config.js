@@ -3,18 +3,18 @@ import { obtencionConstantes } from "../../config.js";
 
 const { SECRET } = obtencionConstantes("jwt");
 
-const firmaToken = async (payload) => {
+export const firmaToken = async (payload) => {
   return await jwt.sign(payload, SECRET, { expiresIn: "1h" });
 };
 
-const verificacionToken = async (token) => {
-  jwt.verify(token, SECRET,(err,resultado)=>{
-    if(err){
-      req.logger.error("fallo en la validacion:"+err)
-      return false
+export const verificacionToken = async (token) => {
+  let verificacion = await jwt.verify(token, SECRET, async (err, resultado) => {
+    if (err) {
+      return false;
     }
-    return resultado
+    return resultado;
   });
+  return verificacion;
 };
 
 export const generacionToken = async (usuario) => {
@@ -29,21 +29,30 @@ export const generacionToken = async (usuario) => {
 
 export const authToken = async (req, res, next) => {
   //extraigo las cookies con autorizaciones para filtrarlas
-  const cookies = req.headers.cookie;
-  let cookieAuth = cookies
-    .split(" ")
-    .find((cookie) => cookie.split("=")[0] === "cookieAuth");
-  if (!cookieAuth) {
-    req.logger.info("No hay usuario logueado");
-    return next();
+  try {
+    const cookies = req.headers.cookie;
+    if (!cookies){
+      res.send({succes:false,mensaje:"usuario no ingresado"})
+      next()
+    }
+    let cookieAuth = cookies
+      .split(" ")
+      .find((cookie) => cookie.split("=")[0] === "cookieAuth");
+    if (!cookieAuth) {
+      req.logger.info("No hay usuario logueado");
+      return next();
+    }
+    const token = cookieAuth.split("=")[1];
+    let valido = await verificacionToken(token);
+    if (!valido) {
+      return res.render(valido.mensaje);
+    }
+    req.user = valido;
+    next();
+  } catch (error) {
+    console.log(error);
   }
-  const token = cookieAuth.split("=")[1];
-  let valido=await verificacionToken(token)
-  if (!valido){
-    return res.render({mensaje:"token alterado"})
-  }
-  req.user = valido;
-  next();/* 
+  /* 
   jwt.verify(token, SECRET, (err, credenciales) => {
     if (err) {
       return res.render("login", {

@@ -7,9 +7,7 @@ export default class usuario {
     return await usuarioModel.findOne({ email });
   };
   buscaId = async (_id) => {
-    console.log(`Buscando el id ${_id}`);
     let resultado = await usuarioModel.findOne({ _id: _id });
-    console.log(`el resultado :${typeof(resultado)}`);
     return resultado;
   };
   crear = async (first_name, last_name, email, age, password, role) => {
@@ -49,7 +47,25 @@ export default class usuario {
   ingreso = async (email, password) => {
     try {
       const user = await this.existente(email);
-      return (!user && !(await isMatch(user, password))) ? false : user;
+      return !user && !(await isMatch(user, password)) ? false : user;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  actualizo = async (id, password) => {
+    try {
+      const usuario = await this.buscaId(id);
+      if (await isMatch(usuario, password)) {
+        return { succes: false, mensaje: "contraseña igual a la anterior" };
+      }
+      const actualizado = await usuarioModel.updateOne(
+        { _id: id },
+        { $set: { password: await createHash(password) } }
+      );
+      if (actualizado.modifiedCount > 0) {
+        return { succes: true, mensaje: "Contraseña Actualizada" };
+      }
     } catch (error) {
       console.log(error);
     }
