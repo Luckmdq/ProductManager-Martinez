@@ -31,21 +31,22 @@ export const authToken = async (req, res, next) => {
   //extraigo las cookies con autorizaciones para filtrarlas
   try {
     const cookies = req.headers.cookie;
-    if (!cookies){
-      res.send({succes:false,mensaje:"usuario no ingresado"})
+    if (!cookies) {
       next()
+      return;
     }
     let cookieAuth = cookies
       .split(" ")
       .find((cookie) => cookie.split("=")[0] === "cookieAuth");
     if (!cookieAuth) {
-      req.logger.info("No hay usuario logueado");
-      return next();
+      res.render("login")
+      return;
     }
     const token = cookieAuth.split("=")[1];
     let valido = await verificacionToken(token);
     if (!valido) {
-      return res.render(valido.mensaje);
+      next()
+      return;
     }
     req.user = valido;
     next();

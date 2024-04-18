@@ -1,0 +1,16 @@
+<h1>Modifucacion de producto</h1>
+{{{this._id}}}
+<form action="/api/productos/"+{{{this._id}}} method="post">
+    <label for="">Titulo</label> <input type="text" name="title"  placeholder={{{this.title}}}/> <br /> <br />
+    <label for="">Descripcion</label> <input type="text" name="description" placeholder={{{this.description}}}/> <br /> <br />
+    <label for="">Precio</label> <input type="number" name="price" placeholder={{{this.price}}} /> <br /> <br />
+    <label for="">Codigo</label> <input type="text" name="code" placeholder={{{this.code}}} /> <br /> <br />
+    <label for="">Stock</label> <input type="number" name="stock" placeholder={{{this.stock}}} /> <br /> <br />
+    <label for="">Category</label> <select name="category" >
+        <option value="Paño fijo">Paño</option>
+        <option value="Puerta">Puerta</option>
+        <option value="Corrediza">Corrediza</option>
+        <option value="Abrir">Abrir</option>
+    </select placeholder={{{this.category}}}> <br /> <br />
+    <button type="submit">Añadir</button>
+</form>

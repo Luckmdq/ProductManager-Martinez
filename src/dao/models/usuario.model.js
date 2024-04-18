@@ -29,7 +29,8 @@ const usuarioSchema = mongoose.Schema({
   },
   role: {
     type: String,
-    default: "user",
+    enum: ["user", "admin", "premium"],
+    required: true,
   },
 });
 

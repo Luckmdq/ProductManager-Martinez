@@ -1,0 +1,16 @@
+<h1>Registro de producto</h1>
+
+<form action="/api/productos/" method="post">
+    <label for="">Titulo</label> <input type="text" name="title" /> <br /> <br />
+    <label for="">Descripcion</label> <input type="text" name="description" /> <br /> <br />
+    <label for="">Precio</label> <input type="number" name="price" /> <br /> <br />
+    <label for="">Codigo</label> <input type="text" name="code" /> <br /> <br />
+    <label for="">Stock</label> <input type="number" name="stock" /> <br /> <br />
+    <label for="">Category</label> <select name="category" >
+        <option value="Paño fijo">Paño</option>
+        <option value="Puerta">Puerta</option>
+        <option value="Corrediza">Corrediza</option>
+        <option value="Abrir">Abrir</option>
+    </select> <br /> <br />
+    <button type="submit">Añadir</button>
+</form>

@@ -18,8 +18,8 @@ export const recuperacion = (token) => {
       subjet: "Mail de prueba para recuperacion de contraseña",
       html: `
             <div>
-              <h1>buenas la que quieras, necesito que te metas aca sin perder el tiempo y recuperes tu contraseña</h1>
-              <a>link: ${token}</>
+              <h1>buenas quien seas, necesito que te metas aca sin perder el tiempo y recuperes tu contraseña</h1>
+              <a>link: http://localhost:8080/restore-password/${token}</>
             </div>
           `,
     });

@@ -42,11 +42,20 @@ import carritoRutas from "./routes/carrito.routes.js";
 import productosRutas from "./routes/productos.routes.js";
 import { ErrorHandler } from "./dto/config/errors/error.js";
 import { addLogger } from "./dto/config/logger.js";
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+import { swaggerOptions } from "./dto/config/swagger.js";
 
 /* inicializacion express */
 const fileStore = FileStore(session);
 const app = express();
 const { PORT, BD_STRING, SESSION_SECRET } = obtencionConstantes("bd");
+
+
+const specs=swaggerJSDoc(swaggerOptions)
+
+
+app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs) )
 
 const hbs = handlebars.create({
   runtimeOptions: {

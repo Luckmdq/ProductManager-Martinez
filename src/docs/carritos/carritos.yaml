@@ -1,0 +1,10 @@
+paths:
+  /api/carritos:
+    get:
+    post:
+  /api/carritos/:CId:
+    get:
+  /api/carritos/modificar/:CId:
+    post:
+    delete:
+    put:

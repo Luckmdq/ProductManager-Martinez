@@ -22,11 +22,11 @@ import { existeProducto } from "../dto/middlewares/productos.js";
 const carritoRutas = Router();
 
 carritoRutas.get("/", obtenerCarritos);
-carritoRutas.get("/:CId", obtenerCarrito); //arreglar respuesta por error
 carritoRutas.post("/", crear);
-carritoRutas.post("/agregarproducto/:CId", existeProducto, agregarProducto);
-carritoRutas.delete("/borrarCarrito/:CId", borrar);
+carritoRutas.get("/:CId", obtenerCarrito); //arreglar respuesta por error
+carritoRutas.post("/modificar/:CId", existeProducto, agregarProducto);
+carritoRutas.delete("/modificar/:CId", borrar);
 /* faltan modificar */
-carritoRutas.put("/actualizarProducto/:CId", actualizar);
+carritoRutas.put("/modificar/:CId", actualizar);
 
 export default carritoRutas;

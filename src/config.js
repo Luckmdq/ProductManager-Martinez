@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 
+
 export const obtencionConstantes = (conjunto) => {
   dotenv.config({ path: "src/.env" });
   switch (conjunto) {

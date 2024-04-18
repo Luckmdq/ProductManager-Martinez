@@ -20,17 +20,30 @@ export const obtenerProductos = async (req, res) => {
 };
 
 export const agregarProducto = async (req, res) => {
-  try {
+  if (!req.user){
+    res.redirect("/login")
+    return
+  }
+  if(req.user.role==="user"){//solo puede agregar administrador o premium
+    res.send("pida autorizacion a algun administrador")
+    return
+  }
+  try { 
     const producto = req.body;
-    const respuesta = await servicio.agregarProducto(producto);
+    const respuesta = await servicio.agregarProducto({...producto,owner:req.user.id,status:true});
     console.log(respuesta);
+  } catch (error) {
+    console.log(error)
+  }
+  /* 
+  try {
     if (!respuesta.completada) {
       return res.status(400).json({ msg: "Error al insertar el producto" });
     }
     res.json({ mensaje: "producto agregado con exito" });
   } catch (error) {
     console.log(error);
-  }
+  } */
 };
 
 export const obtenerPorId = async (req, res) => {
@@ -40,7 +53,8 @@ export const obtenerPorId = async (req, res) => {
     if (!resultado) {
       return res.status(400).json({ msg: "id invalido" });
     }
-    res.json(resultado);
+    console.log(resultado)
+    res.render("modificacion",resultado)
   } catch (error) {
     return error;
   }
@@ -74,10 +88,13 @@ export const borrarProducto = async (req, res) => {
 export const actualizarProducto = async (req, res) => {
   let { PId } = req.params;
   let producto = req.body;
-  let respuesta = await servicio.actualizarProducto(PId, producto);
+  console.log(PId)
+  console.log(producto)
+  /* let respuesta = await servicio.actualizarProducto(PId, producto);
   return respuesta
     ? res.status(201).json({ mensaje: "modificado" })
     : res.status(500).json({ mensaje: "hubo un error" });
+   */  
 };
 
 export const productosGenerados = async (req, res) => {

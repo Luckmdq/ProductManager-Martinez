@@ -8,15 +8,16 @@ import {
   obtenerProductos,
   productosGenerados,
 } from "../dto/controllers/productos.controller.js";
+import { authToken } from "../dto/config/jwt.config.js";
 
 const productosRutas = Router();
 
-productosRutas.get("/", obtenerProductos);
-productosRutas.get("/falseando", productosGenerados);
-productosRutas.post("/", agregarProducto);
+//productosRutas.get("/", obtenerProductos);
+productosRutas.post("/",authToken, agregarProducto);
 productosRutas.get("/:PId", obtenerPorId);
-productosRutas.get("/porCodigo/:codigo", obtenerPorCodigo);
+productosRutas.post("/:PId", authToken , actualizarProducto);
 productosRutas.delete("/:PId", borrarProducto);
-productosRutas.put("/:PId", actualizarProducto);
+productosRutas.get("/falseando", productosGenerados);
+productosRutas.get("/porCodigo/:codigo", obtenerPorCodigo);
 
 export default productosRutas;

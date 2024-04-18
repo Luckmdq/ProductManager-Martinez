@@ -23,15 +23,25 @@ export default class Productos {
   };
   agregarProducto = async (producto) => {
     try {
-      await productoModel.create(producto);
-      return { completada: true };
+      const existe = await productoModel.findOne({ code: producto.code });
+      if (!!existe) {
+        console.log("ya existe el producto");
+        return;
+      }
+      const newProducto = await new productoModel({ ...producto });
+      const guardado = await productoModel.create(newProducto);
+      if(!guardado){
+        console.log("error en creacion de producto")
+        return{succes:false}
+      }
+      return { succes: true, payload: guardado };
     } catch (error) {
-      return { completada: true, mensaje: "Ocurrio un error en el servidor" };
+      console.log(error);
+      return { completada: false, mensaje: "Ocurrio un error en el servidor" };
     }
   };
 
   obtenerPorId = async (id) => {
-    console.log(id)
     try {
       const respuesta = await productoModel.findById(id).lean();
       return respuesta;
@@ -76,7 +86,7 @@ export default class Productos {
     try {
       let data = await productoModel.findById(id);
       if (!data) throw new Error("El producto no existe");
-      let  resultado = await productoModel.updateOne(
+      let resultado = await productoModel.updateOne(
         { _id: id },
         { ...producto }
       );

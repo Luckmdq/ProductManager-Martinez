@@ -1,0 +1,38 @@
+paths:
+  /api/productos:
+    get:
+      summary: devuelve todos los productos
+      tags: 
+        - productos
+      parameters:
+        - name: limit
+          in: query
+          description: Limite de productos a mostrar
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Devuelve una lista de todos los productos
+          content:
+            application/json:
+            schema:
+              $ref:'#/components/schemas/ProductoList'
+    post:
+    
+  /api/productos/{PId}:
+    get:
+    delete:
+    post:
+  /api/productos/falseando:
+    get:
+  /api/productos/porCodgo/{codigo}:
+    get:
+
+
+components:
+  schemas:
+    Producto:
+      type: object
+      properties:
+        _id: ObjectId
+        descrption: Id autogenerado por mongo

@@ -7,7 +7,6 @@ const productoSchema = mongoose.Schema({
   title: {
     type: String,
     required: true,
-    unique: true,
   },
   description: {
     type: String,
@@ -28,12 +27,16 @@ const productoSchema = mongoose.Schema({
   },
   status: {
     type: Boolean,
-    required: true,
   },
   category: {
     type: String,
     enum: ["Paño fijo", "Puerta", "Corrediza", "Abrir"],
     required: true,
+  },
+  owner: {
+    type: mongoose.Schema.ObjectId,
+    required: true,
+    ref: "users",
   },
   thunbnail: {
     type: String,
